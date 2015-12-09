@@ -1,0 +1,18 @@
+
+
+<!--{eval printarr($data);}-->
+<!--{if is_array($data)}-->
+	
+	<!--{foreach $data $k $v}-->
+		<div style="margin:10px;">
+			<span>id: $v[label_id]</span>
+			<br>
+			<span>运动: $v['label_name']</span>
+		</div>
+	<!--{/foreach}-->
+	
+<!--{/if}-->
+
+$content
+
+测试模板index
