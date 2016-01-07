@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>$pageTitle</title>
+        <meta name="keywords" content="$pageKeywords">
+        <meta name="description" content="$pageDescription">
+
+        <!--[if lt IE 9]>
+          <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+          <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!--{eval includeJSCSS();}-->
+
+    </head>
+    <body>
+
+        <div class="container page-header">
+            <h2>$setting['blog']['blogName']<small style="margin-left:10px;">$setting['blog']['blogSubhead']</small></h2>
+        </div>
+        <nav class="navbar navbar-inverse navbar-fixed-top bgrgba" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand active" href="{$_B['siteurl']}">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <!--{foreach $setting['nav'] $k $v}-->
+                        <!--{if $v['status']!=0}-->
+                        <!--{if isset($v['downnav']) && count($v['downnav'])}-->
+                        <li class="dropdown">
+                            <a href="{$v['link']}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>$v['name']</b><span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <!--{foreach $v['downnav'] $ck $cv}-->
+                                <!--{if $v['status']!=0}-->
+                                <li><a href="{$cv['link']}"><b>$cv['name']</b></a></li>
+                                <!--{/if}-->
+                                <!--{/foreach}-->
+                            </ul>
+                        </li>
+                        <!--{else}-->
+                        <li><a href="{$v['link']}"><b>$v['name']</b></a></li>
+                        <!--{/if}-->
+                        <!--{/if}-->
+                        <!--{/foreach}-->
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!--{if $_B['uid']}-->
+                        <li>
+                            <a href="#" class=""><span class="glyphicon glyphicon-bell span-margin-left"></span>
+                                <!--{if $_B['user']['notice']}-->
+                                <span class="badge span-margin-left msg-color brs">$_B['user']['notice']</span>
+                                <!--{else}-->
+                                提醒
+                                <!--{/if}-->
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-envelope span-margin-left"></span>
+                                <span class="badge span-margin-left msg-color">
+                                    <!--{if $_B['user']['pm']}-->
+                                    $_B['user']['pm']
+                                    <!--{/if}-->
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> $_B['username']<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="index.php?m=article&do=new" target="_blank">写文章</a></li>
+                                <li class="divider"></li>
+                                <li><a href="admin.php" target="_blank" target="_blank">后台管理</a></li>
+                                <li><a href="index.php?m=user&do=logout">退出 <span class="glyphicon glyphicon-log-out span-margin-left"></span> </a></li>
+                            </ul>
+                        </li>
+                        <!--{else}-->
+                        <li><a href="javascript:;" class="login"><span class="glyphicon glyphicon-user"></span> 登录</a></li>
+                        <li><a href="index.php?m=user&do=reg"><span class="glyphicon glyphicon-piggy-bank"></span> 注册</a></li>
+                        <!--{/if}-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        {__CONTENT__}
+
+
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row text-center">
+                    <b>404 <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 2015</b>
+                    <span style="margin:0px 10px;">|</span>
+                    <a href="mailto:{$setting['blog']['adminEmail']}">$setting['blog']['adminEmail']</a>
+                    <br>
+                    {FORMATTIME}
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

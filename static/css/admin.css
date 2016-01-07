@@ -1,0 +1,42 @@
+.bg1 {
+    background-image: url(../../asset/image/admin/noise.png), url(../../asset/image/admin/1.jpg);
+    background-repeat: repeat, no-repeat;
+    background-position: left top;
+    background-size: auto, cover; 
+}
+.bgrgba{
+	border:0px;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+.bgrgba-all{
+	border:0px;
+	background-color: rgba(255, 255, 255, 0);
+}
+.table-hover > tbody > tr:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.table > tbody > tr > td {
+	border-top:0px;
+}
+.btn{
+	background-color: rgba(56,121,217, 0.5);
+}
+.form-control{
+	color:#eee;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.form-control:focus{
+	color:#eee;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.mynav{
+	width:1170px;
+	margin:10px auto;
+}
+.mywidth{
+	width:100%;
+}
+.myactive{
+	background-color: rgba(0, 0, 0, 0.2);
+	color: white;
+}
