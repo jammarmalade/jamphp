@@ -25,6 +25,8 @@ class webController extends Controller {
         //获取blog配置缓存
         $setting = $this->setting();
         $this->assign('setting', $setting);
+        //验证登录
+        
     }
     public function setting() {
         static $setting ;
@@ -39,7 +41,6 @@ class webController extends Controller {
                     $setting[$v['sname']] = json_decode($v['svalue'], true);
                 }
                 fCache($cacheName,$setting);
-                echo 'new';
             }
         }
         return $setting;

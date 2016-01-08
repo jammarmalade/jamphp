@@ -103,27 +103,6 @@ function getcookie($var) {
     return $_COOKIE[$var];
 }
 
-//获取数据库缓存
-function loadcache($cachenames) {
-    global $_B;
-    static $loaded = array();
-    $cachenames = is_array($cachenames) ? $cachenames : array($cachenames);
-    $caches = array();
-    foreach ($cachenames as $k) {//若加载过，就不再加载
-        if (!isset($loaded[$k])) {
-            $caches[] = $k;
-            $loaded[$k] = true;
-        }
-    }
-    if (!empty($caches)) {
-        $cachedata = C::t('users')->fetch_all($caches);
-        foreach ($cachedata as $cname => $data) {
-            $_B[$cname] = $data;
-        }
-    }
-    return true;
-}
-
 
 //验证用户名
 function check_username($username) {
@@ -139,16 +118,6 @@ function check_username($username) {
 //验证邮箱
 function check_email($email) {
     return strlen($email) > 6 && strlen($email) <= 32 && preg_match("/^([a-z0-9\-_.+]+)@([a-z0-9\-]+[.][a-z0-9\-.]+)$/", $email);
-}
-
-//设置登录状态
-function setloginstatus($user, $cookietime) {
-    global $_B;
-    $_B['uid'] = intval($user['uid']);
-    $_B['username'] = $user['username'];
-    $_B['groupid'] = $user['groupid'];
-    $_B['user'] = $user;
-    bsetcookie('authuser', authcode("{$user['password']}\t{$user['uid']}", 'ENCODE'), $cookietime);
 }
 
 //加密 解密
@@ -581,9 +550,15 @@ function size_count($size) {
     return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
 }
 
-//文件缓存
+/**
+ * 文件缓存
+ * @param type $name    缓存名称
+ * @param type $data    缓存的数据，若是读取，则为空
+ * @param type $mode    读写模式
+ * @return string       
+ */
 function fCache($name, $data = '',$mode = 'w') {
-    $path = __ROOT__.CACHE_DIR.$name.'.txt';
+    $path = __ROOT__.CACHE_DIR.'cache/'.$name.'.txt';
     if ($data) {
         if ($fp = fopen($path, $mode)) {
             flock($fp, 2);
@@ -601,3 +576,4 @@ function fCache($name, $data = '',$mode = 'w') {
         }
     }
 }
+//

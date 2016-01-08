@@ -34,7 +34,7 @@ class Error {
         $cacheName = 'error_'.date('Ymd', TIMESTAMP) . '.log';
         $exesql = method_exists($e, 'getSql') ? $e->getSql() : '';
         $logmsg = date('Ymd-H:i:s') . ' [-] ' . $e->getCode() . ' [-] ' . $e->getMessage() .' [-] '.$exesql.' [-] '.$extend. PHP_EOL;
-        $path = __ROOT__.CACHE_DIR.$cacheName;
+        $path = __ROOT__.CACHE_DIR.'log/'.$cacheName;
         if ($fp = fopen($path, 'a+')) {
             flock($fp, 2);
             fwrite($fp, $logmsg);
