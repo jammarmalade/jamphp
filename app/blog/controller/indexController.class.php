@@ -7,7 +7,6 @@
 namespace Blog\Controller;
 
 use \Common\webController;
-use Blog\Model\homeModel;
 
 class indexController extends webController {
     /*
@@ -15,9 +14,15 @@ class indexController extends webController {
      */
     public function index() {
         
+        $data = Model('article')->getArticleList(PAGE);
         
-        
+        $this->assign('articleList', $data['articleList']);
+        $this->assign('pageHtml', $data['pageHtml']);
+        $this->assign('imgids', $data['imgids']);
+        $this->assign('theme', $this->theme);
         $this->display();
+        
+        
 //        $articles = J::t('article')->fetch_list('*', '`status`=1', $start, $limit, 'dateline DESC');
 //        foreach ($articles as $k => $v) {
 //            $articles[$k]['content'] = cutstr(strip_ubb($v['content']), 300);

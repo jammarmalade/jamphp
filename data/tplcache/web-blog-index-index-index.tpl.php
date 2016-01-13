@@ -21,7 +21,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top bgrgba" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand active" href="<?php echo $_B['siteurl'];?>">首页</a>
+                    <a class="navbar-brand active" href="<?php echo SITE_URL;?>">首页</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -44,11 +44,11 @@
                         <?php } ?>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <?php if($_B['uid']) { ?>
+                        <?php if(session('user.uid')) { ?>
                         <li>
                             <a href="#" class=""><span class="glyphicon glyphicon-bell span-margin-left"></span>
-                                <?php if($_B['user']['notice']) { ?>
-                                <span class="badge span-margin-left msg-color brs"><?php echo $_B['user']['notice'];?></span>
+                                <?php if(session('user.notice')) { ?>
+                                <span class="badge span-margin-left msg-color brs"><?php session('user.notice');?></span>
                                 <?php } else { ?>
                                 提醒
                                 <?php } ?>
@@ -57,14 +57,13 @@
                         <li>
                             <a href="#"><span class="glyphicon glyphicon-envelope span-margin-left"></span>
                                 <span class="badge span-margin-left msg-color">
-                                    <?php if($_B['user']['pm']) { ?>
-                                    <?php echo $_B['user']['pm'];?>
-                                    <?php } ?>
+                                    <?php if(session('user.pm')) { ?>
+                                    <?php session('user.pm');?>                                    <?php } ?>
                                 </span>
                             </a>
                         </li>
                         <li class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo $_B['username'];?><span class="caret"></span></a>
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php session('user.username');?><span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="index.php?m=article&do=new" target="_blank">写文章</a></li>
                                 <li class="divider"></li>
@@ -82,7 +81,38 @@
         </nav>
 
 
-        博客首页
+        <div class="container" >
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
+            <!-- article list -->
+            <?php if(is_array($articleList)) foreach($articleList as $k => $v) { ?>            <div class="row row-bottom">
+                <a href="<?php echo $v['link'];?>" target="_blank" class="list-link"><?php echo $v['subject'];?></a>
+                <div class="list-content clearfix">
+                    <?php if(isset($imgids[$v['aid']])) { ?>
+                    <div class="list-img"><a href="<?php echo $v['link'];?>" target="_blank"><img src="<?php echo IMG_DIR;?>/l.gif" class="lazy" data-original="<?php echo $imgids[$v['aid']];?>"></a></div>
+                    <?php } ?>
+                    <div><?php echo $v['content'];?></div>
+                </div>
+                <div class="list-tip">
+                    <span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></span>
+                    <span><?php echo $v['author'];?></span> 
+                    <?php if($v['like']) { ?><span><?php echo $v['like'];?> 赞</span><?php } ?>
+                    <?php if($v['comments']) { ?><span><?php echo $v['comments'];?> 条评论</span><?php } ?>
+                </div>
+            </div>
+            <?php } ?>
+            <!-- / article list -->
+
+            <!-- page -->
+            <?php echo $pageHtml;?>
+
+        </div>
+
+        <?php include display('_sidebar',$theme);?>        
+
+    </div>
+    
+</div>
 
 
         <div class="jumbotron">

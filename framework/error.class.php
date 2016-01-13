@@ -71,7 +71,7 @@ class Error {
         $shutDownHtml .= '<div>用时 : ' . (number_format($endTime - $_debug['startTime'], 4)) . ' s</div>';
         $shutDownHtml .= '<div>内存使用 : ' . size_count($endMemery - $_debug['startMemery']).'</div>';
         if (isset($_debug['sql'])) {
-            $shutDownHtml .= '<div>执行了 ' . count($_debug['sql']) . ' 条 sql</div>';
+            $shutDownHtml .= '<div>执行了 ' . count($_debug['sql']) . ' 条 SQL</div>';
             foreach($_debug['sql'] as $v){
                 $shutDownHtml .= '<div style="padding-left:20px;">'.$v.'</div>';
             }

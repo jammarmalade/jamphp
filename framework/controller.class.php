@@ -72,7 +72,7 @@ class Controller {
             $this->error("template does't exists!!!\n" . $viewFile);
         }
         //编译后存放的路径
-        $tplcachepath = __ROOT__ . 'data/tplcache/' . $this->theme . '-'.MODULE_NAME.'-' . CONTROLLER_NAME . '-'.ACTION_NAME.'-' . $viewName . '.tpl.php';
+        $tplcachepath = __ROOT__ . CACHE_DIR.'tplcache/' . $this->theme . '-'.MODULE_NAME.'-' . CONTROLLER_NAME . '-'.ACTION_NAME.'-' . $viewName . '.tpl.php';
         //是否有布局模板
         $layoutpath = '';
         if ($return == false && $this->layout) {

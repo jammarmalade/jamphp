@@ -193,7 +193,13 @@ function bheader($string, $replace = true, $http_response_code = 0) {
         exit();
     }
 }
-
+/**
+ * 格式化时间
+ * @param string $time 时间戳
+ * @param int $ago 是否显示为 几秒/几分/几小时...的相对时间
+ * @param string $format  显示的日期格式
+ * @return string
+ */
 function formatTime($time, $ago = '', $format = '') {
     if ($ago) {
         $dur = TIMESTAMP - $time;
@@ -229,8 +235,16 @@ function formatTime($time, $ago = '', $format = '') {
         return date($format ? $format : ('Y-m-d H:i:s'), $time);
     }
 }
-
-function page($count, $page, $limit, $link, $showpage = 10) {
+/**
+ * 简单的分页
+ * @param int $count    数据记录总数
+ * @param int  $page    当前页数
+ * @param int $limit    每页显示条数
+ * @param string $link  分页链接
+ * @param int $showpage  显示多少页
+ * @return string 返回组织好的 html
+ */
+function simplePage($count, $page, $limit, $link, $showpage = 10) {
     $html = '';
     $middlepage = ceil($showpage / 2);
     $tmp = '?';
@@ -294,7 +308,13 @@ function page($count, $page, $limit, $link, $showpage = 10) {
     return $html;
 }
 
-//二维数组排序，指定key值
+/**
+ * 二维数组排序，指定key值
+ * @param array $multi_array    要排序的数组
+ * @param string $sort_key      按照哪一个key值排序
+ * @param const $sort           排序规则 SORT_ASC，SORT_DESC
+ * @return array                排序后的数组
+ */
 function multi_array_sort($multi_array, $sort_key, $sort = SORT_ASC) {
     if (is_array($multi_array)) {
         foreach ($multi_array as $row_array) {
@@ -311,7 +331,13 @@ function multi_array_sort($multi_array, $sort_key, $sort = SORT_ASC) {
     return $multi_array;
 }
 
-//截取字符串
+/**
+ * 截取字符串
+ * @param string $string    带截取字符串
+ * @param int $length       长度（一个中文也是一个字符）
+ * @param string $dot       超过截取长度显示的字符串
+ * @return string           截取后的字符串
+ */
 function cutstr($string, $length, $dot = ' ...') {
     if (strlen($string) <= $length) {
         return $string;
@@ -481,7 +507,7 @@ function includeJSCSS($page = 'all') {
     $jses = $tmp['js'];
     $html = '';
     foreach ($csses as $cssLinks) {
-        if (BLOG_DEBUG) {
+        if (DEBUG) {
             $_tmpLink = $cssLinks['debug'];
         } else {
             $_tmpLink = $cssLinks['online'];
@@ -489,7 +515,7 @@ function includeJSCSS($page = 'all') {
         echo '<link rel="stylesheet" type="text/css" href="' . $_tmpLink . '" />' . PHP_EOL;
     }
     foreach ($jses as $jsLinks) {
-        if (BLOG_DEBUG) {
+        if (DEBUG) {
             $_tmpLink = $jsLinks['debug'];
         } else {
             $_tmpLink = $jsLinks['online'];
@@ -498,18 +524,27 @@ function includeJSCSS($page = 'all') {
     }
 }
 
-//实例化模型
+/**
+ * 实例化模型
+ * @staticvar path $_instanceM 存放实例化后的模型类
+ * @param type $name            模型名称
+ * @return \path
+ * @throws \Exception
+ */
 function Model($name = '') {
     static $_instanceM;
     if ($name) {
         $path = MODULE_NAME . '\\Model\\' . $name . 'Model';
         if(!file_exists($path.'.class.php')){
             $path = 'common\\Model\\' . $name . 'Model';
+            if(!file_exists(APP_PATH.$path.'.class.php')){
+                $path = 'Framework\\Model';
+            }
         }
     } else {
         $path = 'Framework\\' . $name . 'Model';
     }
-    if (!$_instanceM[$path]) {
+    if (!isset($_instanceM[$path])){
         try {   
             $_instanceM[$path] = new $path($name);
         } catch (Exception $e) {   
@@ -528,7 +563,13 @@ function config($key = '') {
     }
     return $key ? $_config[$key] : $_config;
 }
-
+/**
+ * 调试用，记录运行数据
+ * @param    $msg       要记录的数据
+ * @param    $arr       0(默认)/1,是否是数组，若是数组将此值改为1
+ * @param    $ext       扩展记录数据，字符串类型，如记录 在哪个页面，那一行写入的，方便以后删除
+ * @return      无返回值，到 网站根目录\log.txt 下查看记录的数据
+ */
 function fput($msg, $arr = 0, $ext = '') {
     $time = date('Y-m-d H:i:s', TIMESTAMP);
     $ext .= CONTROLLER_NAME . '  - ' . ACTION_NAME;
@@ -576,4 +617,156 @@ function fCache($name, $data = '',$mode = 'w') {
         }
     }
 }
-//
+/**
+ * 设置/获取/销毁 session
+ * @param string $name    session 名称，支持二维，格式如 var1.var2，不填则返回整个 session，若是为null，则销毁session
+ * @param string $value   session 值，若是为 null ，则销毁该值
+ * @return string
+ */
+function session($name = '', $value = '') {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    $pre = 'jam_';
+    if ($name != '') {
+        if ($pre) {
+            //有前缀
+            $name1 = $name2 = '';
+            if (strpos($name, '.')) {
+                list($name1, $name2) = explode('.', $name);
+            }
+            if ($value != '') {
+                if ($name1) {
+                    return $_SESSION[$pre][$name1][$name2] = $value;
+                } else {
+                    return $_SESSION[$pre][$name] = $value;
+                }
+            } elseif (is_null($value)) {
+                //销毁
+                if ($name1) {
+                    unset($_SESSION[$pre][$name1][$name2]);
+                } else {
+                    unset($_SESSION[$pre][$name]);
+                }
+            } else {
+                //返回session值
+                if ($name1) {
+                    isset($_SESSION[$pre][$name1][$name2]) ? $_SESSION[$pre][$name1][$name2] : null;
+                } else {
+                    isset($_SESSION[$pre][$name]) ? $_SESSION[$pre][$name] : null;
+                }
+            }
+        } else {
+            //没有前缀
+            $name1 = $name2 = '';
+            if (strpos($name, '.')) {
+                list($name1, $name2) = explode('.', $name);
+            }
+            if ($value != '') {
+                if ($name1) {
+                    return $_SESSION[$name1][$name2] = $value;
+                } else {
+                    return $_SESSION[$name] = $value;
+                }
+            } elseif (is_null($value)) {
+                //销毁
+                if ($name1) {
+                    unset($_SESSION[$name1][$name2]);
+                } else {
+                    unset($_SESSION[$name]);
+                }
+            } else {
+                //返回session值
+                if ($name1) {
+                    isset($_SESSION[$name1][$name2]) ? $_SESSION[$name1][$name2] : null;
+                } else {
+                    isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+                }
+            }
+        }
+    } elseif (is_null($name)) {
+        if ($pre) {
+            unset($_SESSION[$pre]);
+        } else {
+            unset($_SESSION);
+        }
+    } else {
+        return $pre ? $_SESSION[$pre] : $_SESSION;
+    }
+}
+/**
+ * 获取客户端ip
+ * @return IP
+ */
+function get_client_ip() {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
+        foreach ($matches[0] as $xip) {
+            if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
+                $ip = $xip;
+                break;
+            }
+        }
+    }
+    return $ip;
+}
+/**
+ * 获取站点首页
+ * @return string
+ */
+function get_site_url() {
+    $scriptName = basename($_SERVER['SCRIPT_FILENAME']);
+    if (basename($_SERVER['SCRIPT_NAME']) === $scriptName) {
+        $currentPath = $_SERVER['SCRIPT_NAME'];
+    } else if (basename($_SERVER['PHP_SELF']) === $scriptName) {
+        $currentPath = $_SERVER['PHP_SELF'];
+    } else if (isset($_SERVER['ORIG_SCRIPT_NAME']) && basename($_SERVER['ORIG_SCRIPT_NAME']) === $scriptName) {
+        $currentPath = $_SERVER['ORIG_SCRIPT_NAME'];
+    } else if (($pos = strpos($_SERVER['PHP_SELF'], '/' . $scriptName)) !== false) {
+        $currentPath = substr($_SERVER['SCRIPT_NAME'], 0, $pos) . '/' . $scriptName;
+    } else {
+        $currentPath = '';
+    }
+    $sitepath = substr($currentPath, 0, strrpos($currentPath, '/'));
+    $res = bhtmlspecialchars('http://'.$_SERVER['HTTP_HOST'].$sitepath.'/');
+    return $res;
+}
+/**
+ * 常用状态返回
+ * @param boolean $status       状态
+ * @param string $msg           提示信息
+ * @param string/array $data    返回数据，任意数据类型
+ * @return array
+ */
+function jreturn($status=true,$msg='',$data=''){
+    $return['status'] = $status;
+    $return['msg'] = $msg;
+    $return['data'] = $data;
+    return $return;
+}
+/**
+ * 用于模板中引入其他模板
+ * @param string $fileName 模版文件名称
+ * @param string $theme 主题名称
+ */
+function display($fileName,$theme=''){
+    $prePath = '';
+    if ($theme) {
+        $prePath = $theme . '/';
+    }
+    $viewFile = APP_PATH . MODULE_NAME . '/view/' . $prePath . CONTROLLER_NAME . '/' . $fileName . '.html';
+    //不存在
+    if (!is_file($viewFile)) {
+        return '';
+    }
+    //编译后存放的路径
+    $tplcachepath = __ROOT__ . CACHE_DIR.'tplcache/' . $theme . '-'.MODULE_NAME.'-' . CONTROLLER_NAME . '-'.ACTION_NAME.'-' . $fileName . '.tpl.php';
+    //是否有布局模板
+    $layoutpath = '';
+    //编译模版
+    $template = new \Framework\Template;
+    $viewfile = $template->display($viewFile, $tplcachepath, '');
+    return $viewfile;
+}

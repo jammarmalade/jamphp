@@ -23,7 +23,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top bgrgba" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand active" href="{$_B['siteurl']}">首页</a>
+                    <a class="navbar-brand active" href="{SITE_URL}">首页</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -48,11 +48,11 @@
                         <!--{/foreach}-->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <!--{if $_B['uid']}-->
+                        <!--{if session('user.uid')}-->
                         <li>
                             <a href="#" class=""><span class="glyphicon glyphicon-bell span-margin-left"></span>
-                                <!--{if $_B['user']['notice']}-->
-                                <span class="badge span-margin-left msg-color brs">$_B['user']['notice']</span>
+                                <!--{if session('user.notice')}-->
+                                <span class="badge span-margin-left msg-color brs">{eval session('user.notice');}</span>
                                 <!--{else}-->
                                 提醒
                                 <!--{/if}-->
@@ -61,14 +61,14 @@
                         <li>
                             <a href="#"><span class="glyphicon glyphicon-envelope span-margin-left"></span>
                                 <span class="badge span-margin-left msg-color">
-                                    <!--{if $_B['user']['pm']}-->
-                                    $_B['user']['pm']
+                                    <!--{if session('user.pm')}-->
+                                    {eval session('user.pm');}
                                     <!--{/if}-->
                                 </span>
                             </a>
                         </li>
                         <li class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> $_B['username']<span class="caret"></span></a>
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {eval session('user.username');}<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="index.php?m=article&do=new" target="_blank">写文章</a></li>
                                 <li class="divider"></li>

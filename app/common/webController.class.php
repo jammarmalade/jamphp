@@ -25,7 +25,6 @@ class webController extends Controller {
         //获取blog配置缓存
         $setting = $this->setting();
         $this->assign('setting', $setting);
-        //验证登录
         
     }
     public function setting() {

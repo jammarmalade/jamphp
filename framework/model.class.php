@@ -113,7 +113,16 @@ class Model {
         $sql .= $this->_sql();
         return $this->_db->query($sql);
     }
+    //查询总条数
+    public function count(){
+        $sql = 'SELECT COUNT(*) as counts ';
+        $sql .= 'FROM ' . $this->tablename . ' ';
+        $sql .= $this->_sql();
 
+        $this->_destruct();
+        $res = $this->_db->query($sql, true);
+        return isset($res['counts']) ? $res['counts'] : 0;
+    }
     //原生查询
     public function query($sql, $args = []) {
         if (is_array($args)) {
@@ -181,7 +190,11 @@ class Model {
                 $and = $tmpcondition = '';
                 foreach ($this->_parame['where'] as $filed => $condition) {
                     if (is_array($condition)) {
-                        $tmpcondition .= $and . $filed . ' ' . $condition[0] . " '" . $condition[1] . "'";
+                        if(in_array(strtolower($condition[0]),array('in','not in'))){
+                            $tmpcondition .= $and . $filed . ' ' . strtoupper($condition[0]) . " (" . $condition[1] . ")";
+                        }else{
+                            $tmpcondition .= $and . $filed . ' ' . $condition[0] . " '" . $condition[1] . "'";
+                        }
                     } else {
                         $tmpcondition .= $and . $filed . "='" . $condition . "'";
                     }

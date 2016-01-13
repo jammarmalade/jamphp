@@ -79,6 +79,7 @@ class Template {
     public function display($tplpath, $tplcachepath, $layout = '') {
         $this->tplpath = $tplpath;
         $this->tplcachepath = $tplcachepath;
+        $layouttplmtime = '';
         if ($layout) {
             $this->layoutpath = $layout;
             $layouttplmtime = filemtime($this->layoutpath);

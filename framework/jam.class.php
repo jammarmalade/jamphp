@@ -55,6 +55,12 @@ class jam {
         define('CSS_DIR', $prePath.$config['cssPath']);
         define('IMG_DIR', $prePath.$config['imgPath']);
         define('CACHE_DIR', $config['cachePath']);
+        //常用 数据常量 设置
+        define('PAGE', max(isset($_GET['page']) ? $_GET['page'] : 1,1));
+        define('REQUEST_IP', get_client_ip());
+        define('SITE_URL', get_site_url());
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : SITE_URL;
+        define('REFERER', substr($referer, -1) == '?' ? substr($referer, 0, -1) : $referer);
 
         //-----初始输入项-----
         //若开启安全项 ,最后的方法是设置为 magic_quotes_gpc=off
