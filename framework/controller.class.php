@@ -59,14 +59,20 @@ class Controller {
         exit();
     }
 
-    public function fetchTemplate($viewName, $return = false) {
+    public function fetchTemplate($viewPath, $return = false) {
+        if(strpos($viewPath,'/' )){
+            list($preFileName,$viewName) = explode('/', $viewPath);
+        }else{
+            $preFileName = CONTROLLER_NAME;
+            $viewName = $viewPath;
+        }
         //模板文件路径(可自定义)
         //若有主题
         $prePath = '';
         if ($this->theme) {
             $prePath = $this->theme . '/';
         }
-        $viewFile = APP_PATH . MODULE_NAME . '/view/' . $prePath . CONTROLLER_NAME . '/' . $viewName . '.html';
+        $viewFile = APP_PATH . MODULE_NAME . '/view/' . $prePath . $preFileName . '/' . $viewName . '.html';
         //不存在，则抛出异常
         if (!is_file($viewFile)) {
             $this->error("template does't exists!!!\n" . $viewFile);
@@ -91,5 +97,10 @@ class Controller {
         trigger_error($errstr);
         exit();
     }
-
+    
+    //显示错误页面
+    public function showError($msg=''){
+        $this->assign('msg', $msg);
+        $this->display('common/_error');
+    }
 }

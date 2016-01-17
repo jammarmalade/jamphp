@@ -1,0 +1,22 @@
+<!--{foreach $commentList $k $com}-->
+<div class="media comment-item">
+    <a class="media-left" href="#">
+        <img src="{$com[avatar]}" alt="{$com[author]}" class="img-thumbnail">
+    </a>
+    <div class="media-body" style="width:100%;">
+        <div class="media-heading"><a href="javascript:;" class="com-author">$com[author]</a>
+            <!--{if $com[rcid]}-->
+            回复 <a href="#comment">$com[username]</a>
+            <!--{/if}-->
+        </div>
+        <div class="com-content" style="padding:10px 0px;">$com[content]</div>
+        <div class="com-tip">
+            <span title="{$com[time]}">$com[formattime]</span>
+            <!--{if session('user.uid') && session('user.uid')!=$com[authorid]}-->
+            <span><a href="javascript:;" class="com-tip-like" data="{$com[cid]}">赞<span><!--{if $com[like]}-->$com[like]<!--{/if}--></span></a></span>
+            <span><a href="#comment" class="com-tip-recom" data="{$com[cid]}">回复</a></span>
+            <!--{/if}-->
+        </div>
+    </div>
+</div>
+<!--{/foreach}-->

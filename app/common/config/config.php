@@ -12,6 +12,7 @@ return [
     'cssPath' => '/static/css',        //css文件路径
     'imgPath' => '/static/image',      //图片文件路径
     'cachePath' => '/data/',            //缓存路径
+    'cookiePre' => 'jamphp_',            //cokkie 前缀
     //数据配置
     'db' => [
         //多个配置 ,第一个为主库

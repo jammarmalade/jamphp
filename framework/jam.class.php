@@ -90,6 +90,8 @@ class jam {
         define('CONTROLLER_NAME', $controller);
         $action = isset($_GET['a']) ? strtolower($_GET['a']) : $config['defaultAction'];
         define('ACTION_NAME', $action);
+        //当前模块的视图路径
+        define('VIEW_PATH', APP_PATH.MODULE_NAME.'/view/');
 
         $class = $this->parseController($controller, $module);
         //利用 反射方法 

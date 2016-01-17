@@ -138,9 +138,11 @@ class articleModel extends Model {
                 return $this->_code($matches[1],$matches[2]);
             }, $content);
         }
-
+        
         if ($attach) {
-            $resattachs = J::t('image')->fetch_all('id,path,thumbH', "aid=$attach AND type='article'");
+            $whereImg['aid'] = $attach;
+            $whereImg['type'] = 'article';
+            $resattachs = Model('image')->field('id,path,thumbH')->where($whereImg)->fetchAll();
 
             if ($resattachs) {
                 $find = $replace = array();
@@ -151,11 +153,11 @@ class articleModel extends Model {
                         $width = 'width="600px"';
                         $suff = '.thumb.jpg';
                     }
-                    $imgurl = $_B['siteurl'] . $v['path'] . $suff;
+                    $imgurl = SITE_URL . $v['path'] . $suff;
                     if ($type == 'update') {
                         $replace[] = '<img src="' . $imgurl . '" ' . $width . ' data-filename="' . $v['id'] . '">';
                     } else {
-                        $replace[] = '<img src="' . IMGDIR . 'l.gif" class="lazy" data-original="' . $imgurl . '" ' . $width . ' data-filename="' . $v['id'] . '">';
+                        $replace[] = '<img src="' . IMG_DIR . '/l.gif" class="lazy" data-original="' . $imgurl . '" ' . $width . ' data-filename="' . $v['id'] . '">';
                     }
                 }
                 $content = preg_replace($find, $replace, $content);
@@ -190,6 +192,21 @@ class articleModel extends Model {
         } else {
             return '[code=' . $code . ']' . $content . '[/code]';
         }
+    }
+    
+    //获取文章
+    public function getArticleInfo($aid){
+        $where['aid'] = $aid;
+        return $this->where($where)->fetch();
+    }
+    //增加查看次数
+    public function addViews($aid) {
+        $cookiekey = 'view-' . $aid;
+        if (getcookie($cookiekey) != $aid) {
+            $this->query("UPDATE %t SET views=`views`+1 WHERE aid=%d",array('article',$aid));
+            bsetcookie($cookiekey, $aid, 300);
+        }
+        return true;
     }
 
 }

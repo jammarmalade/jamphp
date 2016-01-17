@@ -63,7 +63,7 @@ class Model {
     //查询 单条
     public function fetch() {
         $sql = 'SELECT ';
-        if ($this->_parame['field']) {
+        if (isset($this->_parame['field'])) {
             $sql .= $this->_parame['field'] . ' ';
         } else {
             $sql .= '* ';

@@ -1,5 +1,4 @@
 <?php
-
 namespace Common;
 
 use \Framework\Controller;
@@ -19,13 +18,19 @@ class webController extends Controller {
             $this->theme = 'mobile';
             $this->mobile = true;
         }
+        define('THEME', $this->theme);
         $this->assign('pageTitle', $this->pageTitle);
         $this->assign('pageKeywords', $this->pageKeywords);
         $this->assign('pageDescription', $this->pageDescription);
         //获取blog配置缓存
         $setting = $this->setting();
         $this->assign('setting', $setting);
-        
+        //是否是管理员
+        $isAdmin = 0;
+        if(session('user.groupid')==1){
+            $isAdmin = session('user.groupid');
+        }
+        define('IS_ADMIN', $isAdmin);
     }
     public function setting() {
         static $setting ;

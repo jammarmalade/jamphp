@@ -88,21 +88,15 @@ function random($length, $numeric = 0) {
 
 //设置cookie
 function bsetcookie($var, $value = '', $life = 0) {
-    global $_B;
-    $config = $_B['config']['cookie'];
     $life = $life > 0 ? TIMESTAMP + $life : ($life < 0 ? TIMESTAMP - 600 : 0);
-    $path = $config['cookiepath'];
-    $var = $config['cookiepre'] . $var;
-    setcookie($var, $value, $life, $path, $config['cookiedomain']);
+    $path = '/';
+    $cookiePre = config('cookiePre');
+    $var = $cookiePre.$var;
+    setcookie($var, $value, $life, $path, '');
 }
-
-function getcookie($var) {
-    global $_B;
-    $config = $_B['config']['cookie'];
-    $var = $config['cookiepre'] . $var;
-    return $_COOKIE[$var];
+function getcookie($key){
+    return input('cookie.'.$key);
 }
-
 
 //验证用户名
 function check_username($username) {
@@ -248,7 +242,7 @@ function simplePage($count, $page, $limit, $link, $showpage = 10) {
     $html = '';
     $middlepage = ceil($showpage / 2);
     $tmp = '?';
-    if (strpos($link, '?')) {
+    if (strpos($link, '?')===0) {
         $tmp = '&';
     }
     $countpage = ceil($count / $limit);
@@ -561,7 +555,7 @@ function config($key = '') {
         $config = include(__ROOT__ . '/app/common/config/config.php');
         $_config = $config;
     }
-    return $key ? $_config[$key] : $_config;
+    return $key=='' ? $_config : (isset($_config[$key]) ? $_config[$key] : NULL);
 }
 /**
  * 调试用，记录运行数据
@@ -749,24 +743,45 @@ function jreturn($status=true,$msg='',$data=''){
 /**
  * 用于模板中引入其他模板
  * @param string $fileName 模版文件名称
- * @param string $theme 主题名称
+ * @param string $prePath 前缀路径,为空则为当前模块名称
  */
-function display($fileName,$theme=''){
-    $prePath = '';
-    if ($theme) {
-        $prePath = $theme . '/';
+function display($fileName,$prePath = ''){
+    $prePath = $prePath=='' ? CONTROLLER_NAME : $prePath;
+    if (THEME) {
+        $prePath = THEME . '/'.$prePath;
     }
-    $viewFile = APP_PATH . MODULE_NAME . '/view/' . $prePath . CONTROLLER_NAME . '/' . $fileName . '.html';
+    $viewFile = VIEW_PATH. $prePath . '/' . $fileName . '.html';
     //不存在
     if (!is_file($viewFile)) {
         return '';
     }
     //编译后存放的路径
-    $tplcachepath = __ROOT__ . CACHE_DIR.'tplcache/' . $theme . '-'.MODULE_NAME.'-' . CONTROLLER_NAME . '-'.ACTION_NAME.'-' . $fileName . '.tpl.php';
-    //是否有布局模板
-    $layoutpath = '';
+    $tplcachepath = __ROOT__ . CACHE_DIR.'tplcache/' . THEME . '-'.MODULE_NAME.'-' . CONTROLLER_NAME . '-'.ACTION_NAME.'-' . $fileName . '.tpl.php';
+
     //编译模版
     $template = new \Framework\Template;
     $viewfile = $template->display($viewFile, $tplcachepath, '');
     return $viewfile;
+}
+/**
+ * 统一输入获取函数
+ * @param type $varName 变量名称，get.id；post.id；request.id；cookie.id
+ * @param type $default
+ */
+function input($varName,$default=''){
+    if(strpos($varName,'.' )){
+        list($method,$name) = explode('.', $varName);
+    }else{
+        $name = $varName;
+        $method='request';
+    }
+    
+    switch(strtolower($method)) {
+        case 'get': $var = &$_GET; break;
+        case 'post': $var = &$_POST; break;
+        case 'cookie': $var = &$_COOKIE; break;
+        case 'request': $var = &$_REQUEST; break;
+    }
+    
+    return isset($var[$name]) ? $var[$name] : $default;
 }

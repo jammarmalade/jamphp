@@ -70,12 +70,15 @@ class Error {
         $shutDownHtml = '<h3>'.$infoTitle.'</h3>';
         $shutDownHtml .= '<div>用时 : ' . (number_format($endTime - $_debug['startTime'], 4)) . ' s</div>';
         $shutDownHtml .= '<div>内存使用 : ' . size_count($endMemery - $_debug['startMemery']).'</div>';
+        //sql 执行
         if (isset($_debug['sql'])) {
             $shutDownHtml .= '<div>执行了 ' . count($_debug['sql']) . ' 条 SQL</div>';
             foreach($_debug['sql'] as $v){
                 $shutDownHtml .= '<div style="padding-left:20px;">'.$v.'</div>';
             }
         }
+        //文件缓存
+        
         if(!$error){
             $error = error_get_last();
         }

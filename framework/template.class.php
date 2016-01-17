@@ -43,6 +43,10 @@ class Template {
         $tpl = preg_replace_callback("/[\n\r\t]*\{echo\s+(.+?)\}[\n\r\t]*/is", function($matches) {
             return self::stripvtags('<? echo '.$matches[1].'; ?>');
         }, $tpl); //大括号里的echo
+        //引入模版的函数
+        $tpl = preg_replace_callback("/[\n\r\t]*\{display\s+([a-z0-9_]+)\s*([a-z0-9_]*)\}[\n\r\t]*/is", function($matches) {
+            return self::stripvtags("<? include display('".$matches[1]."','".$matches[2]."'); ?>");
+        }, $tpl);
         //--------if elseif else ------模版中结构语言可不加小括号，但必须要用空格分隔
         $tpl = preg_replace_callback("/([\n\r\t]*)\{if\s+(.+?)\}([\n\r\t]*)/is", function($matches) {
             return self::stripvtags($matches[1].'<? if('.$matches[2].') { ?>'.$matches[3]);

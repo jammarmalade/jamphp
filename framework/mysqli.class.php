@@ -147,8 +147,8 @@ class mysqli {
         if (is_object($result)) {
             self::free_result($result);
         }
-
-        return $returnData;
+        
+        return isset($returnData) ? $returnData : '';
     }
 
     //sql 安全检查

@@ -1,0 +1,88 @@
+<div class="container" >
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
+            <!-- article info -->
+            <div class="row content-area">
+                <div class="article-tag clearfix">
+                    <div class="tag-show-area">
+                        <span>
+                            <!--{foreach $articleInfo['tags'] $k $v}-->
+                            <a href="?m=tag&do=view&tid={$v['tagid']}" data="$v['tagid']">$v['tagname']</a>
+                            <!--{/foreach}-->
+                        </span>
+                        <!--{if session('user.uid')==$articleInfo['authorid'] || IS_ADMIN}-->
+                        <a href="javascript:;" class="tag-edit">修改</a>
+                        <!--{/if}-->
+                    </div>
+                    <div class="tag-edit-area clearfix">
+                        <div id="tags_item_add">
+                            <!--{foreach $articleInfo['tags'] $k $v}-->
+                            <div><span>$v['tagname']</span><a href="javascript:;" data="$v['tagid']" class="t-rem" name="removetag"></a></div>
+                            <!--{/foreach}-->
+                        </div>
+                        <div class="">
+                            <div class="tags-search-area"><input type="text" id="tags_ipt_add" placeholder="搜索标签" autocomplete="off"></div>
+                            <a class="a-btn" href="javascript:;">完成</a>
+                        </div>
+                    </div>
+                </div>
+                <h3 id="article_subject" data="{$articleInfo[aid]}">$articleInfo[subject]</h3>
+                <div class="list-tip">
+                    <span title="{$articleInfo['time']}">$articleInfo['formattime']</span>
+                    <span>$articleInfo['author']</span> 
+                    <!--{if $articleInfo['like']}--><span>$articleInfo['like'] 赞</span><!--{/if}-->
+                    <!--{if $articleInfo['comments']}--><span>$articleInfo['comments'] 条评论</span><!--{/if}-->
+                    <span>$articleInfo['views'] 浏览</span>
+                    <!--{if session('user.uid')==$articleInfo['authorid'] || IS_ADMIN}-->
+                    <span><a href="index.php?m=article&do=update&aid={$articleInfo[aid]}">修改</a></span>
+                    <!--{/if}-->
+                </div>
+                <div class="content">
+                    $articleInfo[content]
+                </div>
+                <!-- like -->
+                <div class="text-center extend" style="margin-top:50px;">
+                    <button type="button" class="btn btn-primary like-btn"><span class="glyphicon glyphicon-thumbs-up"></span>
+                        <!--{if $articleInfo['like']}-->
+                        <span class="article-like">$articleInfo['like']</span>
+                        <!--{/if}-->
+                    </button>
+                </div>
+            </div>
+            <!-- / article info -->
+
+            <!-- comments list-->
+            <div class="row" style="margin-top:50px;border-top:3px solid #428BCA;">
+                <h2 class="title">精彩评论</h2>
+                <div class="comments-list">
+                    <!--{if $commentList}-->
+                    <!--{display _comment}-->
+                    <!--{else}-->
+                    <div class="no-conmment">
+                        <p class="text-center"><span style="color:silver;">暂无评论</span></p>
+                    </div>
+                    <!--{/if}-->
+                </div>
+                <!-- comment page -->
+                <!--{if $next}-->
+                <button type="button" class="btn btn-primary btn-block loadmore" data="index.php?m=comment&do=get&aid={$articleInfo[aid]}&page=2"  style="margin-top:10px;">加载更多</button>
+                <!--{/if}-->
+            </div>
+            <!-- code js -->
+            <!--{eval includeJSCSS('code');}-->
+            <script type="text/javascript">
+                SyntaxHighlighter.all();
+            </script>
+            <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
+                <h2 class="title"><a name="comment" id="comment"></a>发表评论<span id="recomment" style="color:#c1c1c1;margin-left:10px;"></span></h2>
+
+                <!--{eval $areaid="comment_edit";$editid="addcomment";}-->
+                <!--{display _editor common}-->
+            </div>
+
+
+        </div>
+        <!--{display _sidebar}-->
+    </div>
+    </div>
+

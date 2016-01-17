@@ -84,32 +84,85 @@
         <div class="container" >
     <div class="row" style="margin-top:20px;">
         <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
-            <!-- article list -->
-            <?php if(is_array($articleList)) foreach($articleList as $k => $v) { ?>            <div class="row row-bottom">
-                <a href="<?php echo $v['link'];?>" target="_blank" class="list-link"><?php echo $v['subject'];?></a>
-                <div class="list-content clearfix">
-                    <?php if(isset($imgids[$v['aid']])) { ?>
-                    <div class="list-img"><a href="<?php echo $v['link'];?>" target="_blank"><img src="<?php echo IMG_DIR;?>/l.gif" class="lazy" data-original="<?php echo $imgids[$v['aid']];?>"></a></div>
-                    <?php } ?>
-                    <div><?php echo $v['content'];?></div>
+            <!-- article info -->
+            <div class="row content-area">
+                <div class="article-tag clearfix">
+                    <div class="tag-show-area">
+                        <span>
+                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <a href="?m=tag&do=view&tid=<?php echo $v['tagid'];?>" data="<?php echo $v['tagid'];?>"><?php echo $v['tagname'];?></a>
+                            <?php } ?>
+                        </span>
+                        <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
+                        <a href="javascript:;" class="tag-edit">修改</a>
+                        <?php } ?>
+                    </div>
+                    <div class="tag-edit-area clearfix">
+                        <div id="tags_item_add">
+                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <div><span><?php echo $v['tagname'];?></span><a href="javascript:;" data="<?php echo $v['tagid'];?>" class="t-rem" name="removetag"></a></div>
+                            <?php } ?>
+                        </div>
+                        <div class="">
+                            <div class="tags-search-area"><input type="text" id="tags_ipt_add" placeholder="搜索标签" autocomplete="off"></div>
+                            <a class="a-btn" href="javascript:;">完成</a>
+                        </div>
+                    </div>
                 </div>
+                <h3 id="article_subject" data="<?php echo $articleInfo['aid'];?>"><?php echo $articleInfo['subject'];?></h3>
                 <div class="list-tip">
-                    <span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></span>
-                    <span><?php echo $v['author'];?></span> 
-                    <?php if($v['like']) { ?><span><?php echo $v['like'];?> 赞</span><?php } ?>
-                    <?php if($v['comments']) { ?><span><?php echo $v['comments'];?> 条评论</span><?php } ?>
+                    <span title="<?php echo $articleInfo['time'];?>"><?php echo $articleInfo['formattime'];?></span>
+                    <span><?php echo $articleInfo['author'];?></span> 
+                    <?php if($articleInfo['like']) { ?><span><?php echo $articleInfo['like'];?> 赞</span><?php } ?>
+                    <?php if($articleInfo['comments']) { ?><span><?php echo $articleInfo['comments'];?> 条评论</span><?php } ?>
+                    <span><?php echo $articleInfo['views'];?> 浏览</span>
+                    <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
+                    <span><a href="index.php?m=article&do=update&aid=<?php echo $articleInfo['aid'];?>">修改</a></span>
+                    <?php } ?>
+                </div>
+                <div class="content">
+                    <?php echo $articleInfo['content'];?>
+                </div>
+                <!-- like -->
+                <div class="text-center extend" style="margin-top:50px;">
+                    <button type="button" class="btn btn-primary like-btn"><span class="glyphicon glyphicon-thumbs-up"></span>
+                        <?php if($articleInfo['like']) { ?>
+                        <span class="article-like"><?php echo $articleInfo['like'];?></span>
+                        <?php } ?>
+                    </button>
                 </div>
             </div>
-            <?php } ?>
-            <!-- / article list -->
+            <!-- / article info -->
 
-            <!-- page -->
-            <?php echo $pageHtml;?>
+            <!-- comments list-->
+            <div class="row" style="margin-top:50px;border-top:3px solid #428BCA;">
+                <h2 class="title">精彩评论</h2>
+                <div class="comments-list">
+                    <?php if($commentList) { ?>
+                    <?php include display('_comment',''); ?>                    <?php } else { ?>
+                    <div class="no-conmment">
+                        <p class="text-center"><span style="color:silver;">暂无评论</span></p>
+                    </div>
+                    <?php } ?>
+                </div>
+                <!-- comment page -->
+                <?php if($next) { ?>
+                <button type="button" class="btn btn-primary btn-block loadmore" data="index.php?m=comment&do=get&aid=<?php echo $articleInfo['aid'];?>&page=2"  style="margin-top:10px;">加载更多</button>
+                <?php } ?>
+            </div>
+            <!-- code js -->
+            <?php includeJSCSS('code');?>            <script type="text/javascript">
+                SyntaxHighlighter.all();
+            </script>
+            <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
+                <h2 class="title"><a name="comment" id="comment"></a>发表评论<span id="recomment" style="color:#c1c1c1;margin-left:10px;"></span></h2>
+
+                <?php $areaid="comment_edit";$editid="addcomment";?>                <?php include display('_editor','common'); ?>            </div>
+
 
         </div>
-        <?php include display('_sidebar','article'); ?>    </div>
-    
-</div>
+        <?php include display('_sidebar',''); ?>    </div>
+    </div>
+
+
 
 
         <div class="jumbotron">
