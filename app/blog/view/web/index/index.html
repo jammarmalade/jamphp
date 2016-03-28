@@ -12,10 +12,10 @@
                     <div>$v['content']</div>
                 </div>
                 <div class="list-tip">
-                    <span><a href="{$v['link']}" target="_blank" class="list-tip-link" title="{$v['time']}">$v['formattime']</a></span>
-                    <span>$v['author']</span> 
-                    <!--{if $v['like']}--><span>$v['like'] 赞</span><!--{/if}-->
-                    <!--{if $v['comments']}--><span>$v['comments'] 条评论</span><!--{/if}-->
+                    <div><span class="glyphicon glyphicon-time"></span><a href="{$v['link']}" target="_blank" class="list-tip-link" title="{$v['time']}">$v['formattime']</a></div>
+                    <div><span class="glyphicon glyphicon-user"></span>$v['author']</div>
+                    <!--{if $v['like']}--><div><span class="glyphicon glyphicon-thumbs-up"></span>$v['like']</div><!--{/if}-->
+                    <!--{if $v['comments']}--><div><span class="glyphicon glyphicon-comment"></span>$v['comments']</div><!--{/if}-->
                 </div>
             </div>
             <!--{/foreach}-->

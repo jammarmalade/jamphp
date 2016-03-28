@@ -48,7 +48,7 @@
                         <li>
                             <a href="#" class=""><span class="glyphicon glyphicon-bell span-margin-left"></span>
                                 <?php if(session('user.notice')) { ?>
-                                <span class="badge span-margin-left msg-color brs"><?php session('user.notice');?></span>
+                                <span class="badge span-margin-left msg-color brs"><?php echo session('user.notice');; ?></span>
                                 <?php } else { ?>
                                 提醒
                                 <?php } ?>
@@ -58,22 +58,22 @@
                             <a href="#"><span class="glyphicon glyphicon-envelope span-margin-left"></span>
                                 <span class="badge span-margin-left msg-color">
                                     <?php if(session('user.pm')) { ?>
-                                    <?php session('user.pm');?>                                    <?php } ?>
+                                    <?php echo session('user.pm');; ?>                                    <?php } ?>
                                 </span>
                             </a>
                         </li>
                         <li class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php session('user.username');?><span class="caret"></span></a>
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo session('user.username');; ?><span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="index.php?m=article&do=new" target="_blank">写文章</a></li>
+                                <li><a href="?m=blog&c=article&a=new" target="_blank">写文章</a></li>
                                 <li class="divider"></li>
                                 <li><a href="admin.php" target="_blank" target="_blank">后台管理</a></li>
-                                <li><a href="index.php?m=user&do=logout">退出 <span class="glyphicon glyphicon-log-out span-margin-left"></span> </a></li>
+                                <li><a href="?m=blog&c=user&a=logoutDo">退出 <span class="glyphicon glyphicon-log-out span-margin-left"></span> </a></li>
                             </ul>
                         </li>
                         <?php } else { ?>
                         <li><a href="javascript:;" class="login"><span class="glyphicon glyphicon-user"></span> 登录</a></li>
-                        <li><a href="index.php?m=user&do=reg"><span class="glyphicon glyphicon-piggy-bank"></span> 注册</a></li>
+                        <li><a href="?m=blog&c=user&a=reg"><span class="glyphicon glyphicon-piggy-bank"></span> 注册</a></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -94,10 +94,10 @@
                     <div><?php echo $v['content'];?></div>
                 </div>
                 <div class="list-tip">
-                    <span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></span>
-                    <span><?php echo $v['author'];?></span> 
-                    <?php if($v['like']) { ?><span><?php echo $v['like'];?> 赞</span><?php } ?>
-                    <?php if($v['comments']) { ?><span><?php echo $v['comments'];?> 条评论</span><?php } ?>
+                    <div><span class="glyphicon glyphicon-time"></span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></div>
+                    <div><span class="glyphicon glyphicon-user"></span><?php echo $v['author'];?></div>
+                    <?php if($v['like']) { ?><div><span class="glyphicon glyphicon-thumbs-up"></span><?php echo $v['like'];?></div><?php } ?>
+                    <?php if($v['comments']) { ?><div><span class="glyphicon glyphicon-comment"></span><?php echo $v['comments'];?></div><?php } ?>
                 </div>
             </div>
             <?php } ?>

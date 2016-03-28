@@ -22,5 +22,12 @@ class indexController extends webController {
         $this->display();
         
     }
-
+    
+    /**
+     * 测试
+     */
+    public function test(){
+        $arr = session('user.username');
+        printarr($arr);
+    }
 }

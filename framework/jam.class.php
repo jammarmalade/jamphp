@@ -147,8 +147,9 @@ class jam {
 
     //自定义 程序执行完成或意外死掉导致PHP执行即将关闭时，将被调用的函数
     public static function jamShutdown() {
-        //若是 debug 调试用
-        if (DEBUG) {
+        //若是 debug 调试用并且不是ajax请求
+        if (DEBUG && !AJAX) {
+//        if (DEBUG) {
             \Framework\Error::shutdownError();
         }
     }

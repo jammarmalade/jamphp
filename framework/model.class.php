@@ -128,7 +128,24 @@ class Model {
         if (is_array($args)) {
             $sql = $this->_format($sql, $args);
         }
+        
+        return $this->_db->query($sql);
+    }
+    //自增
+    public function increase($field, $num = 1) {
+        $this->_parame['where'] = $where;
+        $sql = 'UPDATE ' . $this->tablename . ' SET ';
+        $sql .= "$field=`$field`+$num";
+        $sql .= $this->_sql();
+        return $this->_db->query($sql);
+    }
 
+    //自减
+    public function decrease($field, $num = 1) {
+        $this->_parame['where'] = $where;
+        $sql = 'UPDATE ' . $this->tablename . ' SET ';
+        $sql .= "$field=`$field`-$num";
+        $sql .= $this->_sql();
         return $this->_db->query($sql);
     }
 

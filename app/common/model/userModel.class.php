@@ -26,9 +26,9 @@ class userModel extends Model {
         if(check_email($name)){
             $where['email']=$name;
         }else{
-            $where['name']=$name;
+            $where['username']=$name;
         }
-        $userInfo = $this->field('uid,username,password,email,notice,pm,groupid,salt')->where($where)->find();
+        $userInfo = $this->field('uid,username,password,email,notice,pm,groupid,salt')->where($where)->fetch();
         if($userInfo){
             $pwd=md5(md5($password).$userInfo['salt']);
             if($userInfo['password']==$pwd){

@@ -1,60 +1,63 @@
 /* my style */
 /**/
 body{
-	background-color:#f5f5f5;
+    background-color:#f5f5f5;
 }
 .box-shadow{
-	webkit-box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    webkit-box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     -webkit-transform: translate3d(0, -2px, 0);
     transform: translate3d(0, -2px, 0);
 }
 .content-area{
-	background-color:#fff;
-	border-radius:5px;
-	padding:10px;
+    background-color:#fff;
+    border-radius:5px;
+    padding:10px;
 }
 .title{
-	font-weight:bold;
+    font-weight:bold;
     margin: 0;
     font-size: 22px;
     line-height: 58px;
     color: #333;
 }
 .row-bottom{
-	border:1px solid #fff;
-	background-color:#fff;
-	padding:10px 10px;
-	border-radius:2px;
-	margin-bottom:18px;
+    border:1px solid #fff;
+    background-color:#fff;
+    padding:10px 10px;
+    border-radius:2px;
+    margin-bottom:18px;
+}
+.row-bottom:hover{
+    border-left:3px solid #429DC3;
 }
 .sider-mp{
-	padding:5px;
-	margin-left:5px;
+    padding:5px;
+    margin-left:5px;
 }
 .bottom-line{
-	padding-bottom:20px;
-	border-bottom:1px solid #cecece;
+    padding-bottom:20px;
+    border-bottom:1px solid #cecece;
 }
 .edit-bar{
-	margin-bottom:5px;
+    margin-bottom:5px;
 }
 .span-margin-left{
-	margin-left:5px;
+    margin-left:5px;
 }
 .span-margin-right{
-	margin-right:10px;
+    margin-right:10px;
 }
 .msg-color{
-	background-color:#DE1E2C;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	padding:3px;
-	vertical-align: 2px;
+    background-color:#DE1E2C;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding:3px;
+    vertical-align: 2px;
 }
 .page-header{
-	margin-top:50px;
+    margin-top:50px;
 }
 .bg1 {
     background-image: url(../image/admin/noise.png), url(../image/admin/6.jpg);
@@ -63,91 +66,95 @@ body{
     background-size: auto, cover; 
 }
 .bgrgba{
-	border:0px;
-	background-color: rgba(0, 0, 0, 0.8);
+    border:0px;
+    background-color: rgba(0, 0, 0, 0.8);
 }
 .nav > li:hover{
-	background-color: #000;
+    background-color: #000;
 }
 .container-article-new{
-	background-color:#fff;
-	margin-top:10px;
-	margin-bottom:30px;
+    background-color:#fff;
+    margin-top:10px;
+    margin-bottom:30px;
 }
 .subject-article-new{
-	margin:15px 0;
+    margin:15px 0;
 }
 .submit-div{
-	margin-top:10px;
-	margin-bottom:10px;
-	float:right;
+    margin-top:10px;
+    margin-bottom:10px;
+    float:right;
 }
 .list-link{
-	font-size: 22px;
-	font-weight: 600;
-	text-decoration:none;
+    font-size: 22px;
+    font-weight: 600;
+    text-decoration:none;
 }
 .list-link:hover{
-	color:#428bca;
-	text-decoration:none;
+    color:#428bca;
+    text-decoration:none;
 }
 .list-content{
     margin-bottom:10px;
 }
 .list-img{
     float:left;
-	margin-right:10px;
+    margin-right:10px;
 }
 .list-img img{
     width:200px;
-	height:140px;
-	margin:5px 5px;
+    height:140px;
+    margin:5px 5px;
 }
 .list-tip{
-	margin-bottom:10px;
+    margin-bottom:10px;
+}
+.list-tip div{
+    display: inline-block;
+    color:#999;
+    margin-right:20px;
 }
 .list-tip span{
-	color:#999;
-	margin:0px 10px;
+    margin-right: 8px;
 }
-.list-tip span a{
-	color:#999;
+.list-tip div a{
+    color:#999;
 }
 .shownotice{
-	border-radius:5px;
-	border:1px solid #cecece;
+    border-radius:5px;
+    border:1px solid #cecece;
 }
 .editor-notice{
-	color:red;
-	margin-right:10px;
+    color:red;
+    margin-right:10px;
 }
 .com-tip{
-	color:#999;
+    color:#999;
 }
 .com-tip span{
-	margin:0px 10px;
+    margin:0px 10px;
 }
 .com-tip a{
-	color:#999;
+    color:#999;
 }
 .edit-bottom div{
-	margin-top:10px;
-	display:inline-block;
+    margin-top:10px;
+    display:inline-block;
 }
 #article_subject{
-	font-weight:bold;
+    font-weight:bold;
 }
 .comment-item{
-	border:1px solid #fff;
-	background-color:#fff;
-	padding:5px;
-	border-radius:5px;
+    border:1px solid #fff;
+    background-color:#fff;
+    padding:5px;
+    border-radius:5px;
 }
 .tag-edit-area{
-	display:none;
+    display:none;
 }
 .tags-search-area{
-	float: left;
+    float: left;
     width: 200px;
     height: 30px;
     padding: 2px 12px;
@@ -163,15 +170,15 @@ body{
     -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	margin-right:10px;
+    margin-right:10px;
 }
 #tags_item_add{
-	height:30px;
-	float: left;
+    height:30px;
+    float: left;
 }
 #tags_item_add div{
-	background: #225599;/**/
-	color:#fff;
+    background: #225599;/**/
+    color:#fff;
     padding: 4px 10px;
     border-radius: 5px;
     text-decoration: none;
@@ -181,7 +188,7 @@ body{
     white-space: nowrap;
 }
 .t-rem{
-	display: inline-block;
+    display: inline-block;
     width: 20px;
     height: 20px;
     margin-left: 5px;
@@ -189,15 +196,15 @@ body{
     background: url(../image/close.gif) no-repeat bottom left;
 }
 #tags_ipt_add{
-	float:left;
-	border: none !important;
-	padding: 3px 2px;
-	/*去掉点击时的边框*/
-	outline:medium;
+    float:left;
+    border: none !important;
+    padding: 3px 2px;
+    /*去掉点击时的边框*/
+    outline:medium;
 }
 .tag-show-area span a{
-	background: #428BCA;/**/
-	color:#fff;
+    background: #428BCA;/**/
+    color:#fff;
     padding: 4px 10px;
     border-radius: 5px;
     text-decoration: none;
@@ -207,9 +214,9 @@ body{
     white-space: nowrap;
 }
 .a-btn{
-	float:left;
-	margin-left: 10px;
-	background: #428bca;
+    float:left;
+    margin-left: 10px;
+    background: #428bca;
     color: #fff;
     margin: 0;
     padding: 5px 15px;
@@ -221,23 +228,23 @@ body{
     border: 0;
 }
 .a-btn:hover{
-	color: #fff;
-	text-decoration:none;
-	background: #357ebd;
+    color: #fff;
+    text-decoration:none;
+    background: #357ebd;
 }
 .article-tag div{
-	float:left;
+    float:left;
 }
 .tag-edit{
-	display:inline-block;
-	margin:5px;
-	color: #999;
+    display:inline-block;
+    margin:5px;
+    color: #999;
 }
 .tag-edit:hover{
-	color: #428bca;
+    color: #428bca;
 }
 .article-like{
-	margin-left:10px;
+    margin-left:10px;
 }
 /*自动完成的样式*/
 /* ac_results */

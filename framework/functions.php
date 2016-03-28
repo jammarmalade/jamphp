@@ -645,9 +645,9 @@ function session($name = '', $value = '') {
             } else {
                 //返回session值
                 if ($name1) {
-                    isset($_SESSION[$pre][$name1][$name2]) ? $_SESSION[$pre][$name1][$name2] : null;
+                    return isset($_SESSION[$pre][$name1][$name2]) ? $_SESSION[$pre][$name1][$name2] : null;
                 } else {
-                    isset($_SESSION[$pre][$name]) ? $_SESSION[$pre][$name] : null;
+                    return isset($_SESSION[$pre][$name]) ? $_SESSION[$pre][$name] : null;
                 }
             }
         } else {
@@ -672,9 +672,9 @@ function session($name = '', $value = '') {
             } else {
                 //返回session值
                 if ($name1) {
-                    isset($_SESSION[$name1][$name2]) ? $_SESSION[$name1][$name2] : null;
+                    return isset($_SESSION[$name1][$name2]) ? $_SESSION[$name1][$name2] : null;
                 } else {
-                    isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+                    return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
                 }
             }
         }
@@ -783,5 +783,5 @@ function input($varName,$default=''){
         case 'request': $var = &$_REQUEST; break;
     }
     
-    return isset($var[$name]) ? $var[$name] : $default;
+    return isset($var[$name]) ? trim($var[$name]) : $default;
 }
