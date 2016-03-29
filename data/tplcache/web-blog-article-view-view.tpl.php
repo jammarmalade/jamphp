@@ -109,13 +109,13 @@
                 </div>
                 <h3 id="article_subject" data="<?php echo $articleInfo['aid'];?>"><?php echo $articleInfo['subject'];?></h3>
                 <div class="list-tip">
-                    <span title="<?php echo $articleInfo['time'];?>"><?php echo $articleInfo['formattime'];?></span>
-                    <span><?php echo $articleInfo['author'];?></span> 
-                    <?php if($articleInfo['like']) { ?><span><?php echo $articleInfo['like'];?> 赞</span><?php } ?>
-                    <?php if($articleInfo['comments']) { ?><span><?php echo $articleInfo['comments'];?> 条评论</span><?php } ?>
-                    <span><?php echo $articleInfo['views'];?> 浏览</span>
+                    <div><span class="glyphicon glyphicon-time"></span><span title="<?php echo $articleInfo['time'];?>"><?php echo $articleInfo['formattime'];?></span></div>
+                    <div><span class="glyphicon glyphicon-user"></span><?php echo $articleInfo['author'];?></div>
+                    <?php if($articleInfo['like']) { ?><div><span class="glyphicon glyphicon-thumbs-up"></span><?php echo $articleInfo['like'];?></div><?php } ?>
+                    <?php if($articleInfo['comments']) { ?><div><span class="glyphicon glyphicon-comment"></span><?php echo $articleInfo['comments'];?></div><?php } ?>
+                    <div><span class="glyphicon glyphicon-eye-open"></span><?php echo $articleInfo['views'];?></div>
                     <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
-                    <span><a href="index.php?m=article&do=update&aid=<?php echo $articleInfo['aid'];?>">修改</a></span>
+                    <div><span class="glyphicon glyphicon-edit"></span> <a href="?m=blog&c=article&a=update&aid=<?php echo $articleInfo['aid'];?>">修改</a></div>
                     <?php } ?>
                 </div>
                 <div class="content">

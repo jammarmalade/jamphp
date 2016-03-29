@@ -28,13 +28,13 @@
                 </div>
                 <h3 id="article_subject" data="{$articleInfo[aid]}">$articleInfo[subject]</h3>
                 <div class="list-tip">
-                    <span title="{$articleInfo['time']}">$articleInfo['formattime']</span>
-                    <span>$articleInfo['author']</span> 
-                    <!--{if $articleInfo['like']}--><span>$articleInfo['like'] 赞</span><!--{/if}-->
-                    <!--{if $articleInfo['comments']}--><span>$articleInfo['comments'] 条评论</span><!--{/if}-->
-                    <span>$articleInfo['views'] 浏览</span>
+                    <div><span class="glyphicon glyphicon-time"></span><span title="{$articleInfo['time']}">$articleInfo['formattime']</span></div>
+                    <div><span class="glyphicon glyphicon-user"></span>$articleInfo['author']</div>
+                    <!--{if $articleInfo['like']}--><div><span class="glyphicon glyphicon-thumbs-up"></span>$articleInfo['like']</div><!--{/if}-->
+                    <!--{if $articleInfo['comments']}--><div><span class="glyphicon glyphicon-comment"></span>$articleInfo['comments']</div><!--{/if}-->
+                    <div><span class="glyphicon glyphicon-eye-open"></span>$articleInfo['views']</div>
                     <!--{if session('user.uid')==$articleInfo['authorid'] || IS_ADMIN}-->
-                    <span><a href="index.php?m=article&do=update&aid={$articleInfo[aid]}">修改</a></span>
+                    <div><span class="glyphicon glyphicon-edit"></span> <a href="?m=blog&c=article&a=update&aid={$articleInfo[aid]}">修改</a></div>
                     <!--{/if}-->
                 </div>
                 <div class="content">

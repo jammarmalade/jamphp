@@ -14,12 +14,13 @@ class indexController extends webController {
      */
     public function index() {
         
-        $data = Model('article')->getArticleList(PAGE);
-        
-        $this->assign('articleList', $data['articleList']);
-        $this->assign('pageHtml', $data['pageHtml']);
-        $this->assign('imgids', $data['imgids']);
-        $this->display();
+        bheader('article/index');
+//        $data = Model('article')->getArticleList(PAGE);
+//        
+//        $this->assign('articleList', $data['articleList']);
+//        $this->assign('pageHtml', $data['pageHtml']);
+//        $this->assign('imgids', $data['imgids']);
+//        $this->display();
         
     }
     

@@ -4,7 +4,7 @@ namespace Common\Model;
 
 use \Framework\Model;
 
-class loginfailedModel extends Model {
+class loginFailedModel extends Model {
 
     public $tablename = 'loginfailed';
 

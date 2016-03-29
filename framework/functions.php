@@ -176,16 +176,26 @@ function getUser($uid) {
 
 //php 跳转 $replace【指示该报头是否替换之前的报头，或添加第二个报头】  http_response_code【把 HTTP 响应代码强制为指定的值。（PHP 4 以及更高版本可用）】
 function bheader($string, $replace = true, $http_response_code = 0) {
-    $islocation = substr(strtolower(trim($string)), 0, 8) == 'location';
-    $string = str_replace(array("\r", "\n"), array('', ''), $string);
-    if (empty($http_response_code) || PHP_VERSION < '4.3') {
-        @header($string, $replace);
+    $urlArr = parse_url($string);
+    if(isset($urlArr['host'])){
+        $url = str_replace(array("\r", "\n"), array('', ''), $string);
+    }else{
+        //内部跳转
+        if(strpos($string, '/')===false){
+            $controller = CONTROLLER_NAME;
+            $action = $string;
+        }else{
+            list($controller,$action) = explode('/', $string);
+        }
+        $url = SITE_URL.'?m='.MODULE_NAME.'&c='.$controller.'&a='.$action;
+    }
+    $url = 'location: '.$url;
+    if (empty($http_response_code)) {
+        header($url, $replace);
     } else {
-        @header($string, $replace, $http_response_code);
+        header($url, $replace, $http_response_code);
     }
-    if ($islocation) {
-        exit();
-    }
+    exit();
 }
 /**
  * 格式化时间

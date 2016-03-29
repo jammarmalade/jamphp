@@ -56,7 +56,7 @@ class userController extends webController {
             bsetcookie($k);
         }
         session('user',NULL);
-        bheader('location: '.REFERER);
+        bheader(REFERER);
     }
 }
     

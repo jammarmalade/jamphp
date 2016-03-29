@@ -12,12 +12,12 @@ $(function () {
         var autologin = $('#autologin').is(':checked');
         var regbtn = 1;
         if (username == '' || email == '' || pwd == '' || pwd2 == '') {
-            alert('请填写完整的资料');
+            showMessage('请填写完整的资料');
             return false;
         }
         $(this).find('span').each(function () {
             if ($(this).text() != '') {
-                alert('请填写正确的资料');
+                showMessage('请填写正确的资料');
                 $(this).prev('input').focus();
                 return false;
             }
@@ -31,17 +31,13 @@ $(function () {
     })
     function callback_reg(res) {
         ajaxSending = false;
-        if (res['status'] == -1) {
-            alert('请求失败');
-            return false;
-        }
         if (res['status'] == 2) {
             if (res['data']['id'] != 'error') {
                 var id = res['data']['id'];
                 errormessage(id, res['data']['msg']);
                 $('#' + id).focus();
             } else {
-                alert(res['data']['msg']);
+                showMessage(res['data']['msg']);
             }
             return false;
         }
@@ -110,10 +106,6 @@ $(function () {
     //验证用户名或邮箱
     function callback_check(res) {
         ajaxSending = false;
-        if (res['status'] == -1) {
-            alert('请求失败');
-            return false;
-        }
         var id = '';
         id = res['data']['type'];
         //防止相同值重复提交
@@ -155,7 +147,7 @@ $(function () {
         //	content=strip_tags(content);//涉及到代码的显示，先注释
         content = content.replace(/&nbsp;/g, '');
         if (content == '') {
-            alert('评论内容不能为空');
+            showMessage('评论内容不能为空');
             return false;
         }
         var rcid = $(this).attr('data');
@@ -168,11 +160,7 @@ $(function () {
     })
     function callback_addcomment(res) {
         ajaxSending = false;
-        if (res['status'] == -1) {
-            alert('请求失败');
-            return false;
-        }
-        if (res['status'] == 1) {
+        if (res['status']) {
             $('#comment_edit').val('');
             $('.no-conmment').remove();
             $('.comments-list').append(res['data']);
@@ -185,7 +173,7 @@ $(function () {
         var dom = $(this);
         var url = dom.attr('data');
         if (url == '') {
-            alert('请求失败');
+            showMessage('请求失败');
             return false;
         }
         dom.text('正在加载...');
@@ -199,11 +187,7 @@ $(function () {
     function callback_getcomment(res) {
         var dom = $('.loadmore');
         ajaxSending = false;
-        if (res['status'] == -1) {
-            alert('请求失败');
-            return false;
-        }
-        if (res['status'] == 1) {
+        if (res['status']) {
             $('.comments-list').append(res['data']['content']);
             //reset bind
             $('.com-tip-recom').unbind("click").click(function () {
@@ -217,7 +201,7 @@ $(function () {
                 return true;
             }
         } else {
-            alert(res['data']);
+            showMessage(res['data']);
         }
         dom.text('加载更多');
         dom.attr('data', res['data']['next']);
@@ -237,11 +221,7 @@ $(function () {
         var url = 'index.php?m=comment&do=zan';
         _ajax(url, data, function (res) {
             ajaxSending = false;
-            if (res['status'] == -1) {
-                alert('请求失败');
-                return false;
-            }
-            if (res['status'] == 1) {
+            if (res['status']) {
                 var num = dom.find('span').text();
                 if (num == '') {
                     num = 1;
@@ -256,7 +236,7 @@ $(function () {
                 }
                 dom.find('span').text(num);
             } else {
-                alert(res['data']);
+                showMessage(res['data']);
             }
         });
     }
@@ -298,13 +278,13 @@ $(function () {
     //文章点赞
     $('.like-btn').click(function () {
         var id = $('#article_subject').attr('data');
-        _ajax('?m=article&do=zan', {'aid': id}, function (res) {
+        _ajax('?m=blog&c=article&a=zan', {'aid': id}, function (res) {
             callback_like(res);
         });
     })
     function callback_like(res) {
         ajaxSending = false;
-        if (res['status'] == 1) {
+        if (res['status']) {
             var num = $('.article-like').text();
             if (res['data'] == 'add') {
                 num = ++num;
@@ -313,6 +293,12 @@ $(function () {
             }
             if (num > 0) {
                 $('.article-like').text(num);
+            }
+        }else{
+            if(res['data']=='login'){
+                showLogin();
+            }else{
+                showMessage(res['msg']);
             }
         }
     }
@@ -337,7 +323,7 @@ function loginDo(){
     var l_autologin = $('#li_autologin').is(':checked');
     var loginbtn = 1;
     if (l_name == '' || l_pwd == '') {
-        alert('用户名或密码不能为空');
+        showMessage('用户名或密码不能为空');
         $('#li_username').focus();
         return false;
     }
@@ -375,11 +361,15 @@ function showDialog(title, content, yestitle, yesfun) {
         content: content
     });
 }
+/**
+ * 信息弹窗 
+ * @param string 信息
+ * @param int 图标样式 icon 1 成功 , 2 失败 , 3 询问 , 4 锁定 , 5 哭脸 , 6 笑脸，默认为 2 
+ */
 function showMessage(content, style) {
-    //icon 1 成功 , 2 失败 , 3 询问 , 4 锁定 , 5 哭脸 , 6 笑脸
     //layer.alert(content, {icon: 6});
-    if (in_array(style, [1, 2, 3, 4, 5, 6])) {
-        style = 1;
+    if (!in_array(style, [1, 2, 3, 4, 5, 6])) {
+        style = 2;
     }
     layer.open({
         type: 0, //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -399,12 +389,12 @@ function addTag(id, tagname, type) {
     var length = mb_strlen(tagname);
     var sublen = Math.ceil(length / 2);
     if (sublen > 25) {
-        alert('话题长度只能是50个字符或25个汉字');
+        showMessage('话题长度只能是50个字符或25个汉字');
         return false;
     }
     var spancount = $('#tags_item_add span').length;
     if (spancount >= 5) {
-        alert('只能有5个标签');
+        showMessage('只能有5个标签');
         return false;
     }
     var errortitle = '';
@@ -421,7 +411,7 @@ function addTag(id, tagname, type) {
         }
     });
     if (errortitle != '') {
-        alert(errortitle);
+        showMessage(errortitle);
         return false;
     }
     var success = true;
@@ -430,7 +420,7 @@ function addTag(id, tagname, type) {
             if (res['status']) {
                 id = res['data'];
             } else {
-                alert(res['data']);
+                showMessage(res['data']);
                 success = false;
             }
         }, false);
@@ -459,7 +449,7 @@ function removetag(_this) {
     var id = _this.attr('data');
     var tagArea = $('.tag-show-area span a');
     if (tagArea.length == 1) {
-        alert('至少保留一个标签');
+        showMessage('至少保留一个标签');
         return false;
     }
     _this.parent('div').remove();
@@ -480,7 +470,7 @@ function addRelation(id, dotype) {
         if (res['status']) {
             //添加/删除关系成功
         } else {
-            alert(res['data']);
+            showMessage(res['data']);
             status = false;
         }
         ajaxSending = false;
@@ -546,7 +536,7 @@ function in_array(needle, haystack) {
 //ajax 
 function _ajax(url, data, callback) {
     if (ajaxSending == true) {
-        alert('有请求正在执行...');
+        showMessage('有请求正在执行...');
         return false;
     }
     var async = arguments[3] == false ? arguments[3] : true;
@@ -623,6 +613,6 @@ function printarr(obj) {
         var property = obj[i];
         description += i + " = " + property + "\n";
     }
-    alert(description);
+    showMessage(description);
 }
 

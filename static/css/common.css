@@ -118,6 +118,7 @@ body{
     margin-right: 8px;
 }
 .list-tip div a{
+    font-size: 12px;
     color:#999;
 }
 .shownotice{

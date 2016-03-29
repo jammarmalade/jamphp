@@ -38,7 +38,7 @@ class articleModel extends Model {
         }
         $count=$this->where($whereArticle)->count();
         //组织分页html
-        $pageHtml=simplePage($count,$pageNow,$limit,'?m=blog&c=article&a=list');
+        $pageHtml=simplePage($count,$pageNow,$limit,'?m=blog&c=article');
         $return['articleList'] = $articleList;
         $return['pageHtml'] = $pageHtml;
         $return['imgids'] = $imgids;

@@ -18,7 +18,7 @@ class userModel extends Model {
      */
     public function userLoginCheck($name,$password){
         //失败次数 登录错误在十分钟内 且大于等于5次
-        if ($failed = Model('loginfailed')->where(array('ip'=>REQUEST_IP))->fetch()) {
+        if ($failed = Model('loginFailed')->where(array('ip'=>REQUEST_IP))->fetch()) {
             if ((TIMESTAMP - $failed['lastupdate']) < 600 && $failed['count'] >= 5) {
                 return jreturn(false,'错误次数太多，请 10 分钟后再试');
             }
@@ -37,12 +37,12 @@ class userModel extends Model {
             }else{
                 //插入失败次数
                 if($failed){
-                    Model('loginfailed')->update(['id'=>$failed['ip']],[
+                    Model('loginFailed')->update(['id'=>$failed['ip']],[
                         'count'=>$failed['count']+1,
                         'lastupdate'=>TIMESTAMP,
                     ]);
                 }else{
-                    Model('loginfailed')->add([
+                    Model('loginFailed')->add([
                         'ip'=>REQUEST_IP,
                         'count'=>1,
                         'lastupdate'=>TIMESTAMP,
