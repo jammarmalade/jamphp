@@ -185,7 +185,9 @@ class articleModel extends Model {
         $content = htmlspecialchars(htmlspecialchars_decode($content, ENT_QUOTES), ENT_QUOTES);
         if ($type == 'html') {
             if (in_array($code, array('html', 'php', 'javascript', 'js'))) {
-                return '<pre class="brush:' . $code . '; toolbar: false; auto-links: false;">' . $content . '</pre>';
+//                return '<pre class="brush:' . $code . '; toolbar: false; auto-links: false;">' . $content . '</pre>';
+                //http://prismjs.com/#languages-list
+                return '<pre><code class="language-'.$code.'">' . $content . '</code></pre>';
             } else {
                 return "<pre>$content</pre>";
             }

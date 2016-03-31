@@ -54,7 +54,7 @@
             <!-- comments list-->
             <div class="row" style="margin-top:50px;border-top:3px solid #428BCA;">
                 <h2 class="title">精彩评论</h2>
-                <div class="comments-list">
+                <div class="comments-list language-php">
                     <!--{if $commentList}-->
                     <!--{display _comment}-->
                     <!--{else}-->
@@ -65,19 +65,16 @@
                 </div>
                 <!-- comment page -->
                 <!--{if $next}-->
-                <button type="button" class="btn btn-primary btn-block loadmore" data="index.php?m=comment&do=get&aid={$articleInfo[aid]}&page=2"  style="margin-top:10px;">加载更多</button>
+                <button type="button" class="btn btn-primary btn-block loadmore" data="?m=blog&c=comment&a=getList&aid={$articleInfo[aid]}&page=2"  style="margin-top:10px;">加载更多</button>
                 <!--{/if}-->
             </div>
             <!-- code js -->
-            <!--{eval includeJSCSS('code');}-->
-            <script type="text/javascript">
-                SyntaxHighlighter.all();
-            </script>
+            <!--{eval includeJSCSS('codePrism');}-->
             <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
                 <h2 class="title"><a name="comment" id="comment"></a>发表评论<span id="recomment" style="color:#c1c1c1;margin-left:10px;"></span></h2>
 
-                <!--{eval $areaid="comment_edit";$editid="addcomment";}-->
-                <!--{display _editor common}-->
+                <!--{eval $areaid="comment_edit";$editid="addcomment";$codeList=code_language('show');}-->
+                <!--{display common/_editor}-->
             </div>
 
 

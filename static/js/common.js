@@ -189,6 +189,7 @@ $(function () {
         ajaxSending = false;
         if (res['status']) {
             $('.comments-list').append(res['data']['content']);
+//            Prism.highlightAll($('.comments-list'));
             //reset bind
             $('.com-tip-recom').unbind("click").click(function () {
                 reply_comment($(this));

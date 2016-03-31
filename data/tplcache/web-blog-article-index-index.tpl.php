@@ -107,7 +107,9 @@
             <?php echo $pageHtml;?>
 
         </div>
-        <?php include display('_sidebar','article'); ?>    </div>
+        {display _sidebar article}
+
+    </div>
     
 </div>
 

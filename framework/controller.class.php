@@ -12,7 +12,12 @@ class Controller {
         $this->theme = config('defaultTheme');
         $this->layout = config('defaultLayout');
     }
-
+    /**
+     * 显示模板
+     * @param string 模板文件名称，默认为方法名
+     * @param boolean true/false ,是否返回缓存的数据，默认 false（直接输出），true（返回数据 用户ajax返回html）
+     * @return type
+     */
     public function display($view = '', $return = false) {
         //默认为 方法名
         $viewName = ACTION_NAME;
@@ -39,7 +44,11 @@ class Controller {
         }
     }
 
-    //为模版分配变量
+    /**
+     * 为模版分配变量
+     * @param string 分配的变量名
+     * @param string/array 分配的变量值
+     */
     public function assign($key, $value) {
         $this->_params[$key] = $value;
     }
@@ -48,7 +57,12 @@ class Controller {
     public function error($msg) {
         throw new \Exception($msg);
     }
-
+    /**
+     * ajax 返回数据
+     * @param string 提示内容
+     * @param string/array 返回的数据
+     * @param boolean true/false,默认是true
+     */
     public function ajaxReturn($msg, $data, $status = true) {
 
         $return['status'] = $status;
@@ -58,7 +72,12 @@ class Controller {
         echo $res;
         exit();
     }
-
+    /**
+     * 返回模板文件编译后的php文件真实路径
+     * @param string 模版文件名，如：common/view，
+     * @param boolean true/false ,是否返回数据，据此来使用布局模板，默认 false （不返回，使用布局模板）
+     * @return type
+     */
     public function fetchTemplate($viewPath, $return = false) {
         if(strpos($viewPath,'/' )){
             list($preFileName,$viewName) = explode('/', $viewPath);
@@ -98,7 +117,10 @@ class Controller {
         exit();
     }
     
-    //显示错误页面
+    /**
+     * 显示错误页面
+     * @param string/array 提示信息，也可以是数组
+     */
     public function showError($msg=''){
         $this->assign('msg', $msg);
         $this->display('common/_error');

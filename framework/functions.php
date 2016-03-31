@@ -505,26 +505,41 @@ function includeJSCSS($page = 'all') {
         'debug' => CSS_DIR . '/code/shthemedefault.css',
         'online' => CSS_DIR . '/code/shthemedefault.css',
     );
+    //--------代码高亮2 prism
+    //js
+    $asset['codePrism']['js'][] = array(
+        'debug' => JS_DIR . '/code/prism.js',
+        'online' => JS_DIR . '/code/prism.min.js',
+    );
+    //css
+    $asset['codePrism']['css'][] = array(
+        'debug' => CSS_DIR . '/code/prism.css',
+        'online' => CSS_DIR . '/code/prism.min.css',
+    );
 
     $tmp = $asset[$page];
-    $csses = $tmp['css'];
-    $jses = $tmp['js'];
+    $csses = isset($tmp['css']) ? $tmp['css'] : '';
+    $jses = isset($tmp['js']) ? $tmp['js'] : '';
     $html = '';
-    foreach ($csses as $cssLinks) {
-        if (DEBUG) {
-            $_tmpLink = $cssLinks['debug'];
-        } else {
-            $_tmpLink = $cssLinks['online'];
+    if($csses){
+        foreach ($csses as $cssLinks) {
+            if (DEBUG) {
+                $_tmpLink = $cssLinks['debug'];
+            } else {
+                $_tmpLink = $cssLinks['online'];
+            }
+            echo '<link rel="stylesheet" type="text/css" href="' . $_tmpLink . '" />' . PHP_EOL;
         }
-        echo '<link rel="stylesheet" type="text/css" href="' . $_tmpLink . '" />' . PHP_EOL;
     }
-    foreach ($jses as $jsLinks) {
-        if (DEBUG) {
-            $_tmpLink = $jsLinks['debug'];
-        } else {
-            $_tmpLink = $jsLinks['online'];
+    if($jses){
+        foreach ($jses as $jsLinks) {
+            if (DEBUG) {
+                $_tmpLink = $jsLinks['debug'];
+            } else {
+                $_tmpLink = $jsLinks['online'];
+            }
+            echo '<script src="' . $_tmpLink . '" type="text/javascript"></script>' . PHP_EOL;
         }
-        echo '<script src="' . $_tmpLink . '" type="text/javascript"></script>' . PHP_EOL;
     }
 }
 
@@ -752,11 +767,16 @@ function jreturn($status=true,$msg='',$data=''){
 }
 /**
  * 用于模板中引入其他模板
- * @param string $fileName 模版文件名称
- * @param string $prePath 前缀路径,为空则为当前模块名称
+ * @param string $path 模块名/模板文件名,也可以是模块名
  */
-function display($fileName,$prePath = ''){
-    $prePath = $prePath=='' ? CONTROLLER_NAME : $prePath;
+function display($path){
+    if(strpos($path, '/')!==FALSE){
+        list($prePath,$fileName) = explode('/', $path);
+    }else{
+        $fileName = $path;
+        $prePath = CONTROLLER_NAME;
+    }
+    
     if (THEME) {
         $prePath = THEME . '/'.$prePath;
     }
@@ -794,4 +814,105 @@ function input($varName,$default=''){
     }
     
     return isset($var[$name]) ? trim($var[$name]) : $default;
+}
+/**
+ * 编辑器代码高亮配置
+ * @param string 语言代码，若是show 用于前端编辑器显示
+ * @return string
+ */
+function code_language($type = '') {
+    $codes = [
+        'common' => ['markup', 'clike'],
+        'list' => [
+            'css' => [
+                'show' => 'CSS',
+                'class' => ['css'],
+            ],
+            'html' => [
+                'show' => 'HTML',
+                'class' => ['css'],
+            ],
+            'javascript' => [
+                'show' => 'JavaScript',
+                'class' => ['javascript'],
+            ],
+            'php' => [
+                'show' => 'PHP',
+                'class' => ['php', 'php-extras'],
+            ],
+            'sql' => [
+                'show' => 'SQL',
+                'class' => ['sql'],
+            ],
+            'python' => [
+                'show' => 'Python',
+                'class' => ['python'],
+            ],
+            'aspnet' => [
+                'show' => 'ASP.NET',
+                'class' => ['aspnet'],
+            ],
+            'bash' => [
+                'show' => 'Bash',
+                'class' => ['bash', 'vim'],
+            ],
+            'c' => [
+                'show' => 'C',
+                'class' => ['c'],
+            ],
+            'csharp' => [
+                'show' => 'C#',
+                'class' => ['csharp'],
+            ],
+            'cpp' => [
+                'show' => 'C++',
+                'class' => ['cpp'],
+            ],
+            'ruby' => [
+                'show' => 'Ruby',
+                'class' => ['ruby'],
+            ],
+            'git' => [
+                'show' => 'Git',
+                'class' => ['git'],
+            ],
+            'go' => [
+                'show' => 'Go',
+                'class' => ['go'],
+            ],
+            'go' => [
+                'show' => 'Go',
+                'class' => ['go'],
+            ],
+            'java' => [
+                'show' => 'Java',
+                'class' => ['java'],
+            ],
+            'json' => [
+                'show' => 'JSON',
+                'class' => ['json'],
+            ],
+            'lua' => [
+                'show' => 'Lua',
+                'class' => ['lua'],
+            ],
+            'nginx' => [
+                'show' => 'Nginx',
+                'class' => ['nginx'],
+            ],
+            'perl' => [
+                'show' => 'Perl',
+                'class' => ['perl'],
+            ],
+        ]
+    ];
+    if ($type == 'show') {
+        $returnData = array_map('current', $codes['list']);
+    } elseif ($type != '') {
+        //返回要显示 class 名称
+        $returnData = '';
+        $classes = array_merge($codes['common'], $codes['list'][$type]['class']);
+        $returnData = 'language-' . join(' language-', $classes);
+    }
+    return $returnData;
 }

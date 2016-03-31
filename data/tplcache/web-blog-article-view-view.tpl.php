@@ -135,9 +135,9 @@
             <!-- comments list-->
             <div class="row" style="margin-top:50px;border-top:3px solid #428BCA;">
                 <h2 class="title">精彩评论</h2>
-                <div class="comments-list">
+                <div class="comments-list language-php">
                     <?php if($commentList) { ?>
-                    <?php include display('_comment',''); ?>                    <?php } else { ?>
+                    <?php include display('_comment'); ?>                    <?php } else { ?>
                     <div class="no-conmment">
                         <p class="text-center"><span style="color:silver;">暂无评论</span></p>
                     </div>
@@ -145,21 +145,18 @@
                 </div>
                 <!-- comment page -->
                 <?php if($next) { ?>
-                <button type="button" class="btn btn-primary btn-block loadmore" data="index.php?m=comment&do=get&aid=<?php echo $articleInfo['aid'];?>&page=2"  style="margin-top:10px;">加载更多</button>
+                <button type="button" class="btn btn-primary btn-block loadmore" data="?m=blog&c=comment&a=getList&aid=<?php echo $articleInfo['aid'];?>&page=2"  style="margin-top:10px;">加载更多</button>
                 <?php } ?>
             </div>
             <!-- code js -->
-            <?php includeJSCSS('code');?>            <script type="text/javascript">
-                SyntaxHighlighter.all();
-            </script>
-            <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
+            <?php includeJSCSS('codePrism');?>            <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
                 <h2 class="title"><a name="comment" id="comment"></a>发表评论<span id="recomment" style="color:#c1c1c1;margin-left:10px;"></span></h2>
 
-                <?php $areaid="comment_edit";$editid="addcomment";?>                <?php include display('_editor','common'); ?>            </div>
+                <?php $areaid="comment_edit";$editid="addcomment";$codeList=code_language('show');?>                <?php include display('common/_editor'); ?>            </div>
 
 
         </div>
-        <?php include display('_sidebar',''); ?>    </div>
+        <?php include display('_sidebar'); ?>    </div>
     </div>
 
 
