@@ -11,7 +11,12 @@ class commentModel extends Model {
     public function __construct() {
         parent::__construct($this->tablename);
     }
-    
+    /**
+     * 获取评论列表
+     * @param int 文章id
+     * @param int 当前页数
+     * @return array   评论数据
+     */
     public function getCommentList($aid,$pageNow=1){
         
         $limit = 30;
@@ -35,4 +40,5 @@ class commentModel extends Model {
         }
         return ['list'=>$comlist,'next'=>$next];
     }
+    
 }

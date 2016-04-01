@@ -28,7 +28,9 @@ class indexController extends webController {
      * 测试
      */
     public function test(){
-        $arr = session('user.username');
+        
+        $where['cid'] = 12;
+        $arr = Model('comment')->field('authorid,author')->where($where)->fetch();
         printarr($arr);
     }
 }

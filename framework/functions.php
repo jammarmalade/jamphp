@@ -817,8 +817,8 @@ function input($varName,$default=''){
 }
 /**
  * 编辑器代码高亮配置
- * @param string 语言代码，若是show 用于前端编辑器显示
- * @return string
+ * @param string 语言代码，若是show 用于前端编辑器显示，list 支持的代码列表
+ * @return string 
  */
 function code_language($type = '') {
     $codes = [
@@ -908,10 +908,12 @@ function code_language($type = '') {
     ];
     if ($type == 'show') {
         $returnData = array_map('current', $codes['list']);
+    } elseif ($type == 'list') {
+        $returnData = array_keys($codes['list']);
     } elseif ($type != '') {
         //返回要显示 class 名称
         $returnData = '';
-        $classes = array_merge($codes['common'], $codes['list'][$type]['class']);
+        $classes = array_merge($codes['list'][$type]['class'], $codes['common']);
         $returnData = 'language-' . join(' language-', $classes);
     }
     return $returnData;

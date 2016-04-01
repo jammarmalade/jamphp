@@ -16,7 +16,7 @@ class mysqli {
     //sql 安全检查关键词
     private static $querysafe = [
         'function' => ['load_file', 'hex', 'substring', 'if', 'ord', 'char'],
-        'other' => ['@', 'intooutfile', 'intodumpfile', 'unionselect', '(select', 'unionall', 'uniondistinct', '/*', '*/', '#', '--', '"']
+        'other' => ['@', 'intooutfile', 'intodumpfile', 'unionselect', '(select', 'unionall', 'uniondistinct', '/*', '*/', '--', '"']
     ];
 
     public static function getInstance() {

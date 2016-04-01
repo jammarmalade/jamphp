@@ -152,7 +152,7 @@ $(function () {
         }
         var rcid = $(this).attr('data');
         var data = {aid: aid, content: content, rcid: rcid};
-        var url = 'index.php?m=comment&do=add';
+        var url = '?m=blog&c=comment&a=add';
         _ajax(url, data, function (res) {
             callback_addcomment(res);
         });
@@ -164,8 +164,13 @@ $(function () {
             $('#comment_edit').val('');
             $('.no-conmment').remove();
             $('.comments-list').append(res['data']);
+            Prism.highlightAll($('.comments-list'));
         } else {
-            $('.editor-notice').text(res['data']);
+            if(res['data']=='login'){
+                showLogin();
+            }else{
+                $('.editor-notice').text(res['data']);
+            }
         }
     }
     //load more
@@ -189,7 +194,7 @@ $(function () {
         ajaxSending = false;
         if (res['status']) {
             $('.comments-list').append(res['data']['content']);
-//            Prism.highlightAll($('.comments-list'));
+            Prism.highlightAll($('.comments-list'));
             //reset bind
             $('.com-tip-recom').unbind("click").click(function () {
                 reply_comment($(this));

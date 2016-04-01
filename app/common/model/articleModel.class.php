@@ -184,10 +184,12 @@ class articleModel extends Model {
         $content = str_replace(array("&nbsp;", "\\'", '\\"'), array(' ', '&#039;', '&quot;'), $content);
         $content = htmlspecialchars(htmlspecialchars_decode($content, ENT_QUOTES), ENT_QUOTES);
         if ($type == 'html') {
-            if (in_array($code, array('html', 'php', 'javascript', 'js'))) {
+            if (in_array($code, code_language('list'))) {
 //                return '<pre class="brush:' . $code . '; toolbar: false; auto-links: false;">' . $content . '</pre>';
                 //http://prismjs.com/#languages-list
-                return '<pre><code class="language-'.$code.'">' . $content . '</code></pre>';
+                //根据 code 返回要引入的 prism 样式
+                $classes = code_language($code);
+                return '<pre><code class="'.$classes.'">' . $content . '</code></pre>';
             } else {
                 return "<pre>$content</pre>";
             }
