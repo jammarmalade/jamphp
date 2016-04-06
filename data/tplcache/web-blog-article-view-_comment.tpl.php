@@ -1,7 +1,9 @@
 <?php if(is_array($commentList)) foreach($commentList as $k => $com) { ?><div class="media comment-item">
-    <a class="media-left" href="#">
-        <img src="<?php echo $com['avatar'];?>" alt="<?php echo $com['author'];?>" class="img-thumbnail">
-    </a>
+    <div class="media-left">
+        <a class="" href="#">
+            <img src="<?php echo $com['avatar'];?>" alt="<?php echo $com['author'];?>" class="img-thumbnail">
+        </a>
+    </div>
     <div class="media-body" style="width:100%;">
         <div class="media-heading"><a href="javascript:;" class="com-author"><?php echo $com['author'];?></a>
             <?php if($com['rcid']) { ?>

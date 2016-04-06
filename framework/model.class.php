@@ -48,11 +48,7 @@ class Model {
     //查询 多条
     public function fetchAll($keyfield = '') {
         $sql = 'SELECT ';
-        if (isset($this->_parame['field'])) {
-            $sql .= $this->_parame['field'] . ' ';
-        } else {
-            $sql .= '* ';
-        }
+        $sql .= $this->formatField();
         $sql .= 'FROM ' . $this->tablename . ' ';
         $sql .= $this->_sql();
         $this->_destruct();
@@ -63,11 +59,7 @@ class Model {
     //查询 单条
     public function fetch() {
         $sql = 'SELECT ';
-        if (isset($this->_parame['field'])) {
-            $sql .= $this->_parame['field'] . ' ';
-        } else {
-            $sql .= '* ';
-        }
+        $sql .= $this->formatField();
         $sql .= 'FROM ' . $this->tablename . ' ';
         $sql .= $this->_sql();
 
@@ -146,7 +138,15 @@ class Model {
         $sql .= $this->_sql();
         return $this->_db->query($sql);
     }
-
+    //格式化字段
+    private function formatField(){
+        $sql = '* ';
+        if (isset($this->_parame['field'])) {
+            $keyWords = 'like|order|select|limit';
+            $sql = preg_replace("/($keyWords)/",'`$1`',$this->_parame['field']) . ' ';
+        }
+        return $sql;
+    }
     //格式化 sql 
     private function _format($sql, $arg) {
         $count = substr_count($sql, '%');
@@ -165,7 +165,7 @@ class Model {
             if ($sql[$i] == '%') {
                 $next = $sql[$i + 1];
                 if ($next == 't') {//表名
-                    $tmpsql .= $this->table($arg[$find]);
+                    $tmpsql .= (config('tablePrefix') ? config('tablePrefix') : '').$arg[$find];
                 } elseif ($next == 's') {//addslashes 转义
                     $tmpsql .= '\'' . addslashes(is_array($arg[$find]) ? serialize($arg[$find]) : strval($arg[$find])) . '\'';
                 } elseif ($next == 'f') {//前导零

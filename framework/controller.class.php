@@ -63,7 +63,7 @@ class Controller {
      * @param string/array 返回的数据
      * @param boolean true/false,默认是true
      */
-    public function ajaxReturn($msg, $data, $status = true) {
+    public function ajaxReturn($msg, $data='', $status = true) {
 
         $return['status'] = $status;
         $return['msg'] = $msg;
@@ -120,8 +120,9 @@ class Controller {
     /**
      * 显示错误页面
      * @param string/array 提示信息，也可以是数组
+     * @param array $ext，额外信息，数组。url，跳转链接
      */
-    public function showError($msg=''){
+    public function showError($msg='',$ext=[]){
         $this->assign('msg', $msg);
         $this->display('common/_error');
     }

@@ -76,7 +76,7 @@ class commentController extends webController {
             $insert['cid'] = $cid;
             $insert['formattime'] = '刚刚';
             $insert['time'] = formatTime(TIMESTAMP);
-            $insert['avatar'] = IMG_DIR . 'jam.png';
+            $insert['avatar'] = IMG_DIR . '/jam.png';
             
             $comlist[0] = $insert;
             $this->assign('commentList', $comlist);
@@ -88,5 +88,43 @@ class commentController extends webController {
         }
 
     }
-
+    /**
+     * 赞评论
+     */
+    public function zan(){
+        if(!AJAX){
+            $this->showError('非法操作');
+        }
+        if(!session('user.uid')){
+            if(!AJAX){
+                $this->showError('非法操作');
+            }else{
+                $this->ajaxReturn('请先登录', 'login', false);
+            }
+        }
+        
+        $cid = input('cid');
+        if (!$cid) {
+            $this->ajaxReturn('缺少参数', '', false);
+        }
+        //删除成功
+        $deleteWhere['uid'] = session('user.uid');
+        $deleteWhere['cid'] = $cid;
+        $resStatus = Model('commentLike')->where($deleteWhere)->delete();
+        if ($resStatus) {
+            //已存在
+            Model('comment')->where(['cid'=>$cid])->decrease('like');
+            $this->ajaxReturn('取消赞', 'del', true);
+        } else {
+            //不存在
+            Model('commentLike')->add([
+                'uid' => session('user.uid'),
+                'username' => session('user.username'),
+                'cid' => $cid,
+                'dateline' => TIMESTAMP
+            ]);
+            Model('comment')->where(['cid'=>$cid])->increase('like');
+            $this->ajaxReturn('增加赞', 'add', true);
+        }
+    }
 }

@@ -207,10 +207,22 @@ class articleModel extends Model {
     public function addViews($aid) {
         $cookiekey = 'view-' . $aid;
         if (getcookie($cookiekey) != $aid) {
-            $this->query("UPDATE %t SET views=`views`+1 WHERE aid=%d",array('article',$aid));
+            $this->where(['aid'=>$aid])->increase('views');
             bsetcookie($cookiekey, $aid, 300);
         }
         return true;
     }
-
+    /**
+     * 最新文章
+     * @param int 默认取前四条
+     */
+    public function latest($limit = 4){
+        $res = $this->field('aid,subject,dateline')->where(['status'=>1])->order('dateline DESC')->limit($limit)->fetchAll();
+        if($res){
+            foreach($res as $k=>$v){
+                $res[$k]['time'] = formatTime($v['dateline'], true);
+            }
+        }
+        return $res;
+    }
 }

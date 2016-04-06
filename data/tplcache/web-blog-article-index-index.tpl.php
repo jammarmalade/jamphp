@@ -56,10 +56,11 @@
                         </li>
                         <li>
                             <a href="#"><span class="glyphicon glyphicon-envelope span-margin-left"></span>
-                                <span class="badge span-margin-left msg-color">
-                                    <?php if(session('user.pm')) { ?>
-                                    <?php echo session('user.pm');; ?>                                    <?php } ?>
-                                </span>
+                                <?php if(session('user.pm')) { ?>
+                                <span class="badge span-margin-left msg-color"><?php echo session('user.pm');; ?></span>
+                                <?php } else { ?>
+                                消息
+                                <?php } ?>
                             </a>
                         </li>
                         <li class="dropdown">
@@ -73,7 +74,7 @@
                         </li>
                         <?php } else { ?>
                         <li><a href="javascript:;" class="login"><span class="glyphicon glyphicon-user"></span> 登录</a></li>
-                        <li><a href="?m=blog&c=user&a=reg"><span class="glyphicon glyphicon-piggy-bank"></span> 注册</a></li>
+                        <li><a href="?m=blog&c=user&a=register"><span class="glyphicon glyphicon-piggy-bank"></span> 注册</a></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -124,5 +125,16 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            //回车登录
+            <?php if(!session('user.uid')) { ?>
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13 && $('#login-area').length!=0) {
+                    loginDo();
+                }
+            }
+            <?php } ?>
+        </script>
     </body>
 </html>

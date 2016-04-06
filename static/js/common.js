@@ -23,7 +23,7 @@ $(function () {
             }
         });
         var data = {username: username, email: email, pwd: pwd, pwd2: pwd2, autologin: autologin, regbtn: regbtn};
-        var url = 'index.php?m=user&do=reg';
+        var url = '?m=blog&c=user&a=registerDo';
         _ajax(url, data, function (res) {
             callback_reg(res);
         });
@@ -31,20 +31,13 @@ $(function () {
     })
     function callback_reg(res) {
         ajaxSending = false;
-        if (res['status'] == 2) {
-            if (res['data']['id'] != 'error') {
-                var id = res['data']['id'];
-                errormessage(id, res['data']['msg']);
-                $('#' + id).focus();
-            } else {
-                showMessage(res['data']['msg']);
-            }
-            return false;
-        }
-        if (res['status'] == 1) {
+        if(res['status']){
             var url = $('#referer').val();
             window.location.href = url;
+        }else{
+            showMessage(res['msg']);
         }
+        
     }
     $('#regfrom .form-control').unbind("blur").blur(function () {
         var id = $(this).attr('id');
@@ -96,7 +89,7 @@ $(function () {
         }
         var checkarr = ['username', 'email'];
         if (in_array(id, checkarr) && value != '') {
-            var url = 'index.php?m=user&do=check';
+            var url = '?m=blog&c=user&a=check';
             var data = {type: id, data: value};
             _ajax(url, data, function (res) {
                 callback_check(res);
@@ -109,11 +102,11 @@ $(function () {
         var id = '';
         id = res['data']['type'];
         //防止相同值重复提交
-        $('#auth' + id).val(res['data']['val']);
-        if (res['status'] == 1) {
+        $('#auth' + id).val(res['data']['data']);
+        if (res['status']) {
             $('#' + id).parent("div").parent("div").addClass('has-success');
         } else {
-            errormessage(id, res['data']['msg']);
+            errormessage(id, res['msg']);
         }
 
     }
@@ -169,7 +162,7 @@ $(function () {
             if(res['data']=='login'){
                 showLogin();
             }else{
-                $('.editor-notice').text(res['data']);
+                $('.editor-notice').text(res['msg']);
             }
         }
     }
@@ -207,7 +200,7 @@ $(function () {
                 return true;
             }
         } else {
-            showMessage(res['data']);
+            showMessage(res['msg']);
         }
         dom.text('加载更多');
         dom.attr('data', res['data']['next']);
@@ -224,17 +217,16 @@ $(function () {
     function zan_comment(dom) {
         var cid = dom.attr('data');
         var data = {cid: cid};
-        var url = 'index.php?m=comment&do=zan';
+        var url = '?m=blog&c=comment&a=zan';
         _ajax(url, data, function (res) {
-            ajaxSending = false;
             if (res['status']) {
                 var num = dom.find('span').text();
                 if (num == '') {
                     num = 1;
                 } else {
-                    if (res['data'] == 1) {
+                    if (res['data'] == 'add') {
                         num = parseInt(num) + 1;
-                    } else if (res['data'] == -1) {
+                    } else if (res['data'] == 'del') {
                         if (num != 0) {
                             num = parseInt(num) - 1;
                         }
@@ -242,8 +234,9 @@ $(function () {
                 }
                 dom.find('span').text(num);
             } else {
-                showMessage(res['data']);
+                showMessage(res['msg']);
             }
+            ajaxSending = false;
         });
     }
 
@@ -316,13 +309,7 @@ function showLogin() {
         showDialog('登录', d['data'], '登录', loginDo);
     })
 }
-//回车登录
-document.onkeydown = function (e) {
-    var ev = document.all ? window.event : e;
-    if (ev.keyCode == 13) {
-        loginDo();
-    }
-}
+
 function loginDo(){
     var l_name = $.trim($('#li_username').val());
     var l_pwd = $.trim($('#li_pwd').val());
@@ -345,7 +332,7 @@ function callback_login(res) {
     if (res['status']) {
         window.location.reload();
     } else {
-        $('#li_error').text(res['data']);
+        $('#li_error').text(res['msg']);
     }
 }
 
@@ -426,7 +413,7 @@ function addTag(id, tagname, type) {
             if (res['status']) {
                 id = res['data'];
             } else {
-                showMessage(res['data']);
+                showMessage(res['msg']);
                 success = false;
             }
         }, false);
@@ -476,7 +463,7 @@ function addRelation(id, dotype) {
         if (res['status']) {
             //添加/删除关系成功
         } else {
-            showMessage(res['data']);
+            showMessage(res['msg']);
             status = false;
         }
         ajaxSending = false;

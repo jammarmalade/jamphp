@@ -133,7 +133,7 @@ body{
     color:#999;
 }
 .com-tip span{
-    margin:0px 10px;
+    margin-right:10px;
 }
 .com-tip a{
     color:#999;
@@ -246,6 +246,16 @@ body{
 }
 .article-like{
     margin-left:10px;
+}
+.side-article-list li span{
+    color:#999;
+    margin-left: 10px;
+}
+.panel-body a{
+    text-decoration:none;
+}
+.side-tag-list a{
+    margin-right:20px;
 }
 /*自动完成的样式*/
 /* ac_results */

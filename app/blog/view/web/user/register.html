@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">注册本站</div>
+        <div class="panel-body">
+
+            <div class="row">
+
+                <form class="form-horizontal" role="form" action="index.php?m=user&do=reg" method="post" id="regfrom">
+                    <input type="hidden" id="referer" value="{REFERER}">
+                    <div class="form-group">
+                        <label for="username" class="hidden-xs col-sm-4 col-md-4 control-label">昵称</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="text" class="form-control" id="username" placeholder="昵称" autocomplete="off"><span class="label label-danger"></span>
+                            <input type="hidden" id="authusername" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="hidden-xs col-sm-4 col-md-4 control-label">Email</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="email" class="form-control" id="email" placeholder="Email" autocomplete="off"><span class="label label-danger"></span>
+                            <input type="hidden" id="authemail" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd" class="hidden-xs col-sm-4 col-md-4 control-label">密码</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="password" class="form-control" id="pwd" placeholder="Password"><span class="label label-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd2" class="hidden-xs col-sm-4 col-md-4 control-label">确认密码</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="password" class="form-control" id="pwd2" placeholder="确认密码"><span class="label label-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-1 col-sm-offset-4 col-sm-5">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="autologin" checked="true"> 自动登录
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-1 col-sm-offset-4 col-sm-5">
+                            <button type="submit" class="btn btn-default" id="regbtn">注册</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>

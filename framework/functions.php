@@ -92,6 +92,9 @@ function bsetcookie($var, $value = '', $life = 0) {
     $path = '/';
     $cookiePre = config('cookiePre');
     $var = $cookiePre.$var;
+    if(is_array($value)){
+        $value = json_encode($value);
+    }
     setcookie($var, $value, $life, $path, '');
 }
 function getcookie($key){
@@ -573,7 +576,27 @@ function Model($name = '') {
     }
     return $_instanceM[$path];
 }
+/**
+ * 实例化控制器
+ * @staticvar path $_instanceC 存放实例化后的控制器类
+ * @param string 控制器名称
+ * @return  控制器实例   
+ * @throws \Exception
+ */
+function Controller($name){
+    static $_instanceC;
+    $path = MODULE_NAME . '\\Controller\\' . $name . 'Controller';
 
+    if (!isset($_instanceC[$path])){
+        try {   
+            $_instanceC[$path] = new $path($name);
+        } catch (Exception $e) {   
+            throw new \Exception('无法加载控制器 '.$name.'Controller');
+        } 
+        
+    }
+    return $_instanceC[$path];
+}
 function config($key = '') {
     static $_config;
     if (!$_config) {
@@ -614,22 +637,26 @@ function size_count($size) {
  * 文件缓存
  * @param type $name    缓存名称
  * @param type $data    缓存的数据，若是读取，则为空
+ * @param type $expired 过期时间，单位秒，默认缓存1天
  * @param type $mode    读写模式
  * @return string       
  */
-function fCache($name, $data = '',$mode = 'w') {
+function fCache($name, $data = '',$expired = 86400,$mode = 'w') {
     $path = __ROOT__.CACHE_DIR.'cache/'.$name.'.txt';
     if ($data) {
         if ($fp = fopen($path, $mode)) {
+            $putData['expired'] = TIMESTAMP + $expired;
+            $putData['data'] = $data;
             flock($fp, 2);
-            fwrite($fp, json_encode($data));
+            fwrite($fp, json_encode($putData));
             fclose($fp);
         }
     } else {
         if (file_exists($path)) {
-            $cache = json_decode(file_get_contents($path), true);
-            if ($cache) {
-                return $cache;
+            $cacheData = json_decode(file_get_contents($path), true);
+            //是否过期
+            if ($cacheData['data']) {
+                return $cacheData['expired'] < TIMESTAMP ? '' : $cacheData['data'];
             } else {
                 return '';
             }
@@ -812,8 +839,18 @@ function input($varName,$default=''){
         case 'cookie': $var = &$_COOKIE; break;
         case 'request': $var = &$_REQUEST; break;
     }
-    
-    return isset($var[$name]) ? trim($var[$name]) : $default;
+    //cookie 前缀
+    if($method=='cookie'){
+        $cookiePre = config('cookiePre');
+        $name = $cookiePre.$name;
+    }
+    $val = isset($var[$name]) ? trim($var[$name]) : $default;
+    if($method=='cookie'){
+        //cookie 存的数组（json）
+        $tmp = json_decode($val,true);
+        $val = json_last_error() == JSON_ERROR_NONE ? $tmp : $val;
+    }
+    return $val;
 }
 /**
  * 编辑器代码高亮配置

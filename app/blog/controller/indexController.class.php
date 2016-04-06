@@ -23,6 +23,20 @@ class indexController extends webController {
 //        $this->display();
         
     }
+    /**
+     * 侧边栏数据
+     */
+    public function sideBarData(){
+        $cacheKey = 'sideBar';
+        $data = fCache($cacheKey);
+        if(!$data){
+            $data['articleList'] = Model('article')->latest();
+            $data['commentList'] = Model('comment')->latest();
+            $data['tagList'] = Model('tags')->hotTag();
+            fCache($cacheKey, $data);
+        }
+        return $data;
+    }
     
     /**
      * 测试

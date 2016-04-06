@@ -28,4 +28,10 @@ class tagsModel extends Model {
 
         return $return;
     }
+    /**
+     * 热门标签
+     */
+    public function hotTag($limit = 10){
+        return $this->field('tagid,tagname,articles')->where(['status'=>1])->order('articles DESC')->limit($limit)->fetchAll();
+    }
 }

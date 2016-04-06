@@ -12,12 +12,13 @@ class articleController extends webController {
 
     public function index() {
         
+        $sideBarData = Controller('index')->sideBarData();
         $data = Model('article')->getArticleList(PAGE);
         
         $this->assign('articleList', $data['articleList']);
         $this->assign('pageHtml', $data['pageHtml']);
         $this->assign('imgids', $data['imgids']);
-        $this->assign('theme', $this->theme);
+        $this->assign('sideBarData', $sideBarData);
         $this->display();
         
     }
@@ -48,6 +49,9 @@ class articleController extends webController {
         $articleInfo['tags'] = Model('tags')->getArticleTags($aid);
         //增加查看次数
         $articleModel->addViews($aid);
+        
+        $sideBarData = Controller('index')->sideBarData();
+        $this->assign('sideBarData', $sideBarData);
         
         $this->assign('pageTitle', $articleInfo['subject'].' - '.$this->siteName);
         $this->assign('articleInfo', $articleInfo);

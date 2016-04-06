@@ -63,7 +63,7 @@ class jam {
         define('REFERER', substr($referer, -1) == '?' ? substr($referer, 0, -1) : $referer);
 
         //-----初始输入项-----
-        //若开启安全项 ,最后的方法是设置为 magic_quotes_gpc=off
+        //若开启安全项 ,最好的方法是设置为 magic_quotes_gpc=off
         if (MAGIC_QUOTES_GPC) {
             $_GET = astripslashes($_GET);
             $_POST = astripslashes($_POST);

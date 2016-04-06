@@ -82,84 +82,62 @@
         </nav>
 
 
-        <div class="container" >
-    <div class="row" style="margin-top:20px;">
-        <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
-            <!-- article info -->
-            <div class="row content-area">
-                <div class="article-tag clearfix">
-                    <div class="tag-show-area">
-                        <span>
-                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <a href="?m=tag&do=view&tid=<?php echo $v['tagid'];?>" data="<?php echo $v['tagid'];?>"><?php echo $v['tagname'];?></a>
-                            <?php } ?>
-                        </span>
-                        <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
-                        <a href="javascript:;" class="tag-edit">修改</a>
-                        <?php } ?>
-                    </div>
-                    <div class="tag-edit-area clearfix">
-                        <div id="tags_item_add">
-                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <div><span><?php echo $v['tagname'];?></span><a href="javascript:;" data="<?php echo $v['tagid'];?>" class="t-rem" name="removetag"></a></div>
-                            <?php } ?>
-                        </div>
-                        <div class="">
-                            <div class="tags-search-area"><input type="text" id="tags_ipt_add" placeholder="搜索标签" autocomplete="off"></div>
-                            <a class="a-btn" href="javascript:;">完成</a>
+        <div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">注册本站</div>
+        <div class="panel-body">
+
+            <div class="row">
+
+                <form class="form-horizontal" role="form" action="index.php?m=user&do=reg" method="post" id="regfrom">
+                    <input type="hidden" id="referer" value="<?php echo REFERER;?>">
+                    <div class="form-group">
+                        <label for="username" class="hidden-xs col-sm-4 col-md-4 control-label">昵称</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="text" class="form-control" id="username" placeholder="昵称" autocomplete="off"><span class="label label-danger"></span>
+                            <input type="hidden" id="authusername" value="">
                         </div>
                     </div>
-                </div>
-                <h3 id="article_subject" data="<?php echo $articleInfo['aid'];?>"><?php echo $articleInfo['subject'];?></h3>
-                <div class="list-tip">
-                    <div><span class="glyphicon glyphicon-time"></span><span title="<?php echo $articleInfo['time'];?>"><?php echo $articleInfo['formattime'];?></span></div>
-                    <div><span class="glyphicon glyphicon-user"></span><?php echo $articleInfo['author'];?></div>
-                    <?php if($articleInfo['like']) { ?><div><span class="glyphicon glyphicon-thumbs-up"></span><?php echo $articleInfo['like'];?></div><?php } ?>
-                    <?php if($articleInfo['comments']) { ?><div><span class="glyphicon glyphicon-comment"></span><?php echo $articleInfo['comments'];?></div><?php } ?>
-                    <div><span class="glyphicon glyphicon-eye-open"></span><?php echo $articleInfo['views'];?></div>
-                    <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
-                    <div><span class="glyphicon glyphicon-edit"></span> <a href="?m=blog&c=article&a=update&aid=<?php echo $articleInfo['aid'];?>">修改</a></div>
-                    <?php } ?>
-                </div>
-                <div class="content">
-                    <?php echo $articleInfo['content'];?>
-                </div>
-                <!-- like -->
-                <div class="text-center extend" style="margin-top:50px;">
-                    <button type="button" class="btn btn-primary like-btn"><span class="glyphicon glyphicon-thumbs-up"></span>
-                        <?php if($articleInfo['like']) { ?>
-                        <span class="article-like"><?php echo $articleInfo['like'];?></span>
-                        <?php } ?>
-                    </button>
-                </div>
-            </div>
-            <!-- / article info -->
-
-            <!-- comments list-->
-            <div class="row" style="margin-top:50px;border-top:3px solid #428BCA;">
-                <h2 class="title">精彩评论</h2>
-                <div class="comments-list language-php">
-                    <?php if($commentList) { ?>
-                    <?php include display('_comment'); ?>                    <?php } else { ?>
-                    <div class="no-conmment">
-                        <p class="text-center"><span style="color:silver;">暂无评论</span></p>
+                    <div class="form-group">
+                        <label for="email" class="hidden-xs col-sm-4 col-md-4 control-label">Email</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="email" class="form-control" id="email" placeholder="Email" autocomplete="off"><span class="label label-danger"></span>
+                            <input type="hidden" id="authemail" value="">
+                        </div>
                     </div>
-                    <?php } ?>
-                </div>
-                <!-- comment page -->
-                <?php if($next) { ?>
-                <button type="button" class="btn btn-primary btn-block loadmore" data="?m=blog&c=comment&a=getList&aid=<?php echo $articleInfo['aid'];?>&page=2"  style="margin-top:10px;">加载更多</button>
-                <?php } ?>
+                    <div class="form-group">
+                        <label for="pwd" class="hidden-xs col-sm-4 col-md-4 control-label">密码</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="password" class="form-control" id="pwd" placeholder="Password"><span class="label label-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd2" class="hidden-xs col-sm-4 col-md-4 control-label">确认密码</label>
+                        <div class="col-xs-10 col-sm-4 col-md-4">
+                            <input type="password" class="form-control" id="pwd2" placeholder="确认密码"><span class="label label-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-1 col-sm-offset-4 col-sm-5">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="autologin" checked="true"> 自动登录
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-1 col-sm-offset-4 col-sm-5">
+                            <button type="submit" class="btn btn-default" id="regbtn">注册</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
-            <!-- code js -->
-            <?php includeJSCSS('codePrism');?>            <div class="row" style="margin-top:10px;border-top:3px solid #428BCA;">
-                <h2 class="title"><a name="comment" id="comment"></a>发表评论<span id="recomment" style="color:#c1c1c1;margin-left:10px;"></span></h2>
-
-                <?php $areaid="comment_edit";$editid="addcomment";$codeList=code_language('show');?>                <?php include display('common/_editor'); ?>            </div>
-
 
         </div>
-        <?php include display('_sidebar'); ?>    </div>
     </div>
-
+</div>
 
 
 

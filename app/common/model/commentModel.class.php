@@ -40,5 +40,17 @@ class commentModel extends Model {
         }
         return ['list'=>$comlist,'next'=>$next];
     }
-    
+    /**
+     * 最新评论
+     * @param int 默认取前四条
+     */
+    public function latest($limit = 4){
+        $res = $this->field('cid,ruid,username,aid,authorid,author,content')->where(['status'=>1])->order('dateline DESC')->limit($limit)->fetchAll();
+        if($res){
+            foreach($res as $k=>$v){
+                $res[$k]['content'] = cutstr($v['content'], 100);
+            }
+        }
+        return $res;
+    }
 }
