@@ -37,6 +37,10 @@ class tagController extends webController {
     public function search(){
         $tagname = input('q');
         $data = Model('tags')->searchTagByName($tagname);
+        if(!$data){
+            $data[0]['id']=0;
+            $data[0]['tagname']=$tagname;
+	}
 	echo json_encode($data);
 	exit();
     }
@@ -52,7 +56,7 @@ class tagController extends webController {
         }
         if($dotype=='addRelation'){
             //是否已有5个标签
-            if (Model('tagid_aid')->count(['aid'=>$aid]) == 5) {
+            if (Model('tagid_aid')->where(['aid'=>$aid])->count() == 5) {
                 $this->ajaxReturn('文章已存在 5 个标签','' , false);
             }
             if (Model('tagid_aid')->where(['tagid'=>$tagid,'aid'=>$aid])->fetch()) {

@@ -66,7 +66,7 @@
                         <li class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo session('user.username');; ?><span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="?m=blog&c=article&a=new" target="_blank">写文章</a></li>
+                                <li><a href="?m=blog&c=article&a=add" target="_blank">写文章</a></li>
                                 <li class="divider"></li>
                                 <li><a href="admin.php" target="_blank" target="_blank">后台管理</a></li>
                                 <li><a href="?m=blog&c=user&a=logoutDo">退出 <span class="glyphicon glyphicon-log-out span-margin-left"></span> </a></li>
@@ -90,7 +90,7 @@
                 <div class="article-tag clearfix">
                     <div class="tag-show-area">
                         <span>
-                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <a href="?m=tag&do=view&tid=<?php echo $v['tagid'];?>" data="<?php echo $v['tagid'];?>"><?php echo $v['tagname'];?></a>
+                            <?php if(is_array($articleInfo['tags'])) foreach($articleInfo['tags'] as $k => $v) { ?>                            <a href="?tid=<?php echo $v['tagid'];?>" data="<?php echo $v['tagid'];?>"><?php echo $v['tagname'];?></a>
                             <?php } ?>
                         </span>
                         <?php if(session('user.uid')==$articleInfo['authorid'] || IS_ADMIN) { ?>
@@ -125,9 +125,7 @@
                 <!-- like -->
                 <div class="text-center extend" style="margin-top:50px;">
                     <button type="button" class="btn btn-primary like-btn"><span class="glyphicon glyphicon-thumbs-up"></span>
-                        <?php if($articleInfo['like']) { ?>
-                        <span class="article-like"><?php echo $articleInfo['like'];?></span>
-                        <?php } ?>
+                        <span class="article-like"><?php if($articleInfo['like']) { ?><?php echo $articleInfo['like'];?><?php } ?></span>
                     </button>
                 </div>
             </div>
@@ -158,7 +156,7 @@
 
         </div>
         <?php include display('_sidebar'); ?>    </div>
-    </div>
+</div>
 
 
 

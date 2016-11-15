@@ -18,7 +18,7 @@ class webController extends Controller {
             $this->theme = 'mobile';
             $this->mobile = true;
         }
-        define('THEME', $this->theme);
+        !defined('THEME') && define('THEME', $this->theme);
         $this->assign('pageTitle', $this->pageTitle);
         $this->assign('pageKeywords', $this->pageKeywords);
         $this->assign('pageDescription', $this->pageDescription);
@@ -30,7 +30,7 @@ class webController extends Controller {
         if(session('user.groupid')==1){
             $isAdmin = session('user.groupid');
         }
-        define('IS_ADMIN', $isAdmin);
+        !defined('IS_ADMIN') && define('IS_ADMIN', $isAdmin);
     }
     public function setting() {
         static $setting ;

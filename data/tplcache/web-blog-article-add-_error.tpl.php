@@ -66,7 +66,7 @@
                         <li class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo session('user.username');; ?><span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="?m=blog&c=article&a=add" target="_blank">写文章</a></li>
+                                <li><a href="?m=blog&c=article&a=new" target="_blank">写文章</a></li>
                                 <li class="divider"></li>
                                 <li><a href="admin.php" target="_blank" target="_blank">后台管理</a></li>
                                 <li><a href="?m=blog&c=user&a=logoutDo">退出 <span class="glyphicon glyphicon-log-out span-margin-left"></span> </a></li>
@@ -82,35 +82,12 @@
         </nav>
 
 
-        <div class="container" >
-    <div class="row" style="margin-top:20px;">
-        <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
-            <!-- article list -->
-            <?php if(is_array($articleList)) foreach($articleList as $k => $v) { ?>            <div class="row row-bottom">
-                <a href="<?php echo $v['link'];?>" target="_blank" class="list-link"><?php echo $v['subject'];?></a>
-                <div class="list-content clearfix">
-                    <?php if(isset($imgids[$v['aid']])) { ?>
-                    <div class="list-img"><a href="<?php echo $v['link'];?>" target="_blank"><img src="<?php echo IMG_DIR;?>/l.gif" class="lazy" data-original="<?php echo $imgids[$v['aid']];?>"></a></div>
-                    <?php } ?>
-                    <div><?php echo $v['content'];?></div>
-                </div>
-                <div class="list-tip">
-                    <div><span class="glyphicon glyphicon-time"></span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></div>
-                    <div><span class="glyphicon glyphicon-user"></span><?php echo $v['author'];?></div>
-                    <?php if($v['like']) { ?><div><span class="glyphicon glyphicon-thumbs-up"></span><?php echo $v['like'];?></div><?php } ?>
-                    <?php if($v['comments']) { ?><div><span class="glyphicon glyphicon-comment"></span><?php echo $v['comments'];?></div><?php } ?>
-                </div>
-            </div>
-            <?php } ?>
-            <!-- / article list -->
-
-            <!-- page -->
-            <?php echo $pageHtml;?>
-
-        </div>
-        <?php include display('article/_sidebar'); ?>    </div>
-    
+        
+<div class="container shownotice alert alert-warning" role="alert">
+    <p class="text-center"><span style="font-size:16px;"><?php echo $msg;?></span></p>
+    <p class="text-center"><a href="<?php echo $ext['url'];?>" class="<?php echo $ext['linkclass'];?>"><?php echo $ext['linkmsg'];?></a></p>
 </div>
+
 
 
         <div class="jumbotron">

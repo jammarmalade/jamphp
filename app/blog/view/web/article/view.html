@@ -7,7 +7,7 @@
                     <div class="tag-show-area">
                         <span>
                             <!--{foreach $articleInfo['tags'] $k $v}-->
-                            <a href="?m=tag&do=view&tid={$v['tagid']}" data="$v['tagid']">$v['tagname']</a>
+                            <a href="?tid={$v['tagid']}" data="$v['tagid']">$v['tagname']</a>
                             <!--{/foreach}-->
                         </span>
                         <!--{if session('user.uid')==$articleInfo['authorid'] || IS_ADMIN}-->
@@ -43,9 +43,7 @@
                 <!-- like -->
                 <div class="text-center extend" style="margin-top:50px;">
                     <button type="button" class="btn btn-primary like-btn"><span class="glyphicon glyphicon-thumbs-up"></span>
-                        <!--{if $articleInfo['like']}-->
-                        <span class="article-like">$articleInfo['like']</span>
-                        <!--{/if}-->
+                        <span class="article-like"><!--{if $articleInfo['like']}-->$articleInfo['like']<!--{/if}--></span>
                     </button>
                 </div>
             </div>
@@ -81,5 +79,5 @@
         </div>
         <!--{display _sidebar}-->
     </div>
-    </div>
+</div>
 

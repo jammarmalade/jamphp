@@ -83,8 +83,7 @@ class Model {
     }
 
     //修改
-    public function update($where, $data = []) {
-        $this->_parame['where'] = $where;
+    public function update($data = []) {
         if (!$data) {
             $data = $this->data;
         }
@@ -206,7 +205,7 @@ class Model {
                 foreach ($this->_parame['where'] as $filed => $condition) {
                     if (is_array($condition)) {
                         if(in_array(strtolower($condition[0]),array('in','not in'))){
-                            $tmpcondition .= $and . $filed . ' ' . strtoupper($condition[0]) . " (" . $condition[1] . ")";
+                            $tmpcondition .= $and . $filed . ' ' . strtoupper($condition[0]) . " (" . (is_array($condition[1]) ? join(',', $condition[1]) : $condition[1] ). ")";
                         }else{
                             $tmpcondition .= $and . $filed . ' ' . $condition[0] . " '" . $condition[1] . "'";
                         }

@@ -10,8 +10,7 @@
     </div>
     <!-- /clock -->
     <div class="row sider-mp" style="margin-top:20px;">
-        <!--{eval includeJSCSS('clock');}-->
-        <div id="clock" class="light">
+        <?php includeJSCSS('clock');?>        <div id="clock" class="light">
             <div class="display">
                 <div class="weekdays"></div>
                 <div class="ampm"></div>
@@ -33,12 +32,11 @@
                 <div id="side_article_by" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="side_article_title">
                     <div class="panel-body">
                         <ul class="list-unstyled side-article-list">
-                            <!--{foreach $sideBarData[articleList] $k $v}-->
-                                <li>
-                                    <a href="?m=blog&c=article&a=view&aid={$v['aid']}" target="_blank">$v['subject']</a>
-                                    <span>$v['time']</span>
+                            <?php if(is_array($sideBarData['articleList'])) foreach($sideBarData['articleList'] as $k => $v) { ?>                                <li>
+                                    <a href="?m=blog&c=article&a=view&aid=<?php echo $v['aid'];?>" target="_blank"><?php echo $v['subject'];?></a>
+                                    <span><?php echo $v['time'];?></span>
                                 </li>
-                            <!--{/foreach}-->
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
@@ -58,15 +56,14 @@
                 <div id="side_comment_by" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="side_comment_title">
                     <div class="panel-body">
                         <ul class="list-unstyled">
-                            <!--{foreach $sideBarData[commentList] $k $v}-->
-                                <li>
-                                    <a href='###'>$v['author']</a>
-                                    <!--{if $v['ruid']}-->
-                                        回复 <a href='###'>$v['username']</a>
-                                    <!--{/if}-->
-                                    ：<span>$v['content']</span>
+                            <?php if(is_array($sideBarData['commentList'])) foreach($sideBarData['commentList'] as $k => $v) { ?>                                <li>
+                                    <a href='###'><?php echo $v['author'];?></a>
+                                    <?php if($v['ruid']) { ?>
+                                        回复 <a href='###'><?php echo $v['username'];?></a>
+                                    <?php } ?>
+                                    ：<span><?php echo $v['content'];?></span>
                                 </li>
-                            <!--{/foreach}-->
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
@@ -86,22 +83,20 @@
                 <div id="side_classify_by" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="side_classify_title">
                     <div class="panel-body side-tag-list">
 <!--                        <ul class="list-unstyled">
-                            {foreach $sideBarData[tagList] $k $v}
-                                <li>
+                            <?php if(is_array($sideBarData['tagList'])) foreach($sideBarData['tagList'] as $k => $v) { ?>                                <li>
                                     <a href='###'>
-                                        $v['tagname']
-                                    {if $v['articles']}
-                                        （$v['articles']）
-                                    {/if}
+                                        <?php echo $v['tagname'];?>
+                                    <?php if($v['articles']) { ?>
+                                        （<?php echo $v['articles'];?>）
+                                    <?php } ?>
                                     </a>
                                 </li>
-                            {/foreach}
+                            <?php } ?>
                         </ul>-->
-                        <!--{foreach $sideBarData[tagList] $k $v}-->
-                            <a href="?tid={$v['tagid']}">
-                                $v['tagname']<!--{if $v['articles']}-->（$v['articles']）<!--{/if}-->
+                        <?php if(is_array($sideBarData['tagList'])) foreach($sideBarData['tagList'] as $k => $v) { ?>                            <a href="?tid=<?php echo $v['tagid'];?>">
+                                <?php echo $v['tagname'];?><?php if($v['articles']) { ?>（<?php echo $v['articles'];?>）<?php } ?>
                             </a>
-                        <!--{/foreach}-->
+                        <?php } ?>
                     </div>
                 </div>
             </div>

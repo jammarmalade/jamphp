@@ -82,35 +82,24 @@
         </nav>
 
 
-        <div class="container" >
-    <div class="row" style="margin-top:20px;">
-        <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0px 30px;">
-            <!-- article list -->
-            <?php if(is_array($articleList)) foreach($articleList as $k => $v) { ?>            <div class="row row-bottom">
-                <a href="<?php echo $v['link'];?>" target="_blank" class="list-link"><?php echo $v['subject'];?></a>
-                <div class="list-content clearfix">
-                    <?php if(isset($imgids[$v['aid']])) { ?>
-                    <div class="list-img"><a href="<?php echo $v['link'];?>" target="_blank"><img src="<?php echo IMG_DIR;?>/l.gif" class="lazy" data-original="<?php echo $imgids[$v['aid']];?>"></a></div>
-                    <?php } ?>
-                    <div><?php echo $v['content'];?></div>
-                </div>
-                <div class="list-tip">
-                    <div><span class="glyphicon glyphicon-time"></span><a href="<?php echo $v['link'];?>" target="_blank" class="list-tip-link" title="<?php echo $v['time'];?>"><?php echo $v['formattime'];?></a></div>
-                    <div><span class="glyphicon glyphicon-user"></span><?php echo $v['author'];?></div>
-                    <?php if($v['like']) { ?><div><span class="glyphicon glyphicon-thumbs-up"></span><?php echo $v['like'];?></div><?php } ?>
-                    <?php if($v['comments']) { ?><div><span class="glyphicon glyphicon-comment"></span><?php echo $v['comments'];?></div><?php } ?>
-                </div>
-            </div>
-            <?php } ?>
-            <!-- / article list -->
+        <div class="container container-article-new">
+    <div class="subject-article-new">
+        <h4>文章标题（80个字符）</h4>
+        <input type="text" class="form-control" id="subject" autocomplete="off" value="<?php echo $articleInfo['subject'];?>">
+    </div>
+    <?php includeJSCSS('articleNew');?>    <script type="text/javascript">
+        var defaultcontent = '<?php echo $defaultcontent;?>';
+    </script>
 
-            <!-- page -->
-            <?php echo $pageHtml;?>
+    <h4>文章内容</h4>
+    <div id="article_content"></div>
 
-        </div>
-        <?php include display('article/_sidebar'); ?>    </div>
-    
+    <div class="submit-div">
+        <button type="button" class="btn btn-primary" action-type="article-new" action-data="<?php if($aid) { ?><?php echo $aid;?><?php } else { ?>0<?php } ?>"><?php if($type=='add') { ?>发布文章 <?php } else { ?> 提交修改<?php } ?> </button>
+    </div>
+
 </div>
+
 
 
         <div class="jumbotron">

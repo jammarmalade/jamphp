@@ -1,0 +1,18 @@
+<div class="container container-article-new">
+    <div class="subject-article-new">
+        <h4>文章标题（80个字符）</h4>
+        <input type="text" class="form-control" id="subject" autocomplete="off" value="$articleInfo[subject]">
+    </div>
+    <!--{eval includeJSCSS('articleNew');}-->
+    <script type="text/javascript">
+        var defaultcontent = '$defaultcontent';
+    </script>
+
+    <h4>文章内容</h4>
+    <div id="article_content"></div>
+
+    <div class="submit-div">
+        <button type="button" class="btn btn-primary" action-type="article-new" action-data="{if $aid}$aid{else}0{/if}"><!--{if $type=='add'}-->发布文章 <!--{else}--> 提交修改<!--{/if}--> </button>
+    </div>
+
+</div>

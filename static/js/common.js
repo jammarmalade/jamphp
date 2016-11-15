@@ -290,9 +290,8 @@ $(function () {
             } else {
                 num = --num;
             }
-            if (num > 0) {
-                $('.article-like').text(num);
-            }
+            num = num < 0 ? 0 : num; 
+            $('.article-like').text(num);
         }else{
             if(res['data']=='login'){
                 showLogin();
@@ -353,6 +352,7 @@ function showDialog(title, content, yestitle, yesfun) {
         shift: 0, //出场动画，0-6(css3 ie6-9不支持)
         content: content
     });
+    $('#li_username').focus();
 }
 /**
  * 信息弹窗 
@@ -431,7 +431,7 @@ function addTag(id, tagname, type) {
     $('#tags_item_add').append(html);
 
     //将新添加的标签append到显示区域
-    var showHtml = '<a href="?m=tag&do=view&tid=' + id + '" data="' + id + '">' + tagname + '</a>';
+    var showHtml = '<a href="?tid=' + id + '" data="' + id + '">' + tagname + '</a>';
     $('.tag-show-area span').append(showHtml);
     //重新绑定删除
     $(".t-rem").unbind("click").click(function () {

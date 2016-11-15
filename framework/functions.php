@@ -208,6 +208,8 @@ function bheader($string, $replace = true, $http_response_code = 0) {
  * @return string
  */
 function formatTime($time, $ago = '', $format = '') {
+    static $year ;
+    $year = date('Y',TIMESTAMP);
     if ($ago) {
         $dur = TIMESTAMP - $time;
         if ($dur < 0) {
@@ -232,7 +234,11 @@ function formatTime($time, $ago = '', $format = '') {
                                 return $day . ' 天前';
                             }
                         } else {
-                            return date('n-j H:i', $time);
+                            if($year != date('Y',$time)){
+                                return date('Y-m-d H:i', $time);
+                            }else{
+                                return date('n-j H:i', $time);
+                            }
                         }
                     }
                 }
@@ -653,6 +659,11 @@ function fCache($name, $data = '',$expired = 86400,$mode = 'w') {
         }
     } else {
         if (file_exists($path)) {
+            //若是删除
+            if($data === NULL){
+                unlink($path);
+                return '';
+            }
             $cacheData = json_decode(file_get_contents($path), true);
             //是否过期
             if ($cacheData['data']) {

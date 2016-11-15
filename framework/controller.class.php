@@ -123,7 +123,15 @@ class Controller {
      * @param array $ext，额外信息，数组。url，跳转链接
      */
     public function showError($msg='',$ext=[]){
+        if(!isset($ext['url'])){
+            $ext['url'] = getReferer();
+        }
+        if(!isset($ext['linkmsg'])){
+            $ext['linkmsg'] = '返回上一级';
+        }
+        
         $this->assign('msg', $msg);
+        $this->assign('ext', $ext);
         $this->display('common/_error');
     }
 }

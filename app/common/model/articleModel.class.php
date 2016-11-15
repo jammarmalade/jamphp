@@ -11,39 +11,55 @@ class articleModel extends Model {
     public function __construct() {
         parent::__construct($this->tablename);
     }
-    
-    public function getArticleList($pageNow = 1,$limit = 10){
+
+    public function getArticleList($tagId = 0,$pageNow = 0, $limit = 10) {
+        $pageNow = $pageNow ? $pageNow : PAGE;
         $startLimit = ($pageNow - 1) * $limit;
-        $whereArticle['status'] = 1;
-        $articleList = $this->where($whereArticle)->order('dateline DESC')->limit($startLimit,$limit)->fetchAll();
+        if($tagId){
+            //根据标签来获取文章
+            $articleList = $this->query("SELECT article.* FROM %t article INNER JOIN %t ta ON article.aid=ta.aid WHERE ta.tagid=%d AND article.status=1 ORDER BY article.dateline DESC Limit $startLimit, $limit",array('article','tagid_aid',$tagId));
+            $resCount = $this->query("SELECT COUNT(*) as counts FROM %t article INNER JOIN %t ta ON article.aid=ta.aid WHERE ta.tagid=%d AND article.status=1",array('article','tagid_aid',$tagId));
+            $count = isset($resCount['counts']) ? $resCount['counts'] : 0;
+        }else{
+            $whereArticle['status'] = 1;
+            $articleList = $this->where($whereArticle)->order('dateline DESC')->limit($startLimit, $limit)->fetchAll();
+            $count = $this->where($whereArticle)->count();
+        }
+        
         $imgids = [];
-        foreach ($articleList as $k => $v) {
-            $articleList[$k]['content'] = cutstr($this->strip_ubb($v['content']), 300);
-            $articleList[$k]['formattime'] = formatTime($v['dateline'], 1);
-            $articleList[$k]['time'] = formatTime($v['dateline']);
-            $articleList[$k]['link'] = '?m=blog&c=article&a=view&aid=' . $v['aid'];
-            if ($v['image']) {
-                $imgids[$v['aid']] = $v['image'];
+        if($articleList){
+            foreach ($articleList as $k => $v) {
+                $articleList[$k]['content'] = cutstr($this->strip_ubb($v['content']), 300);
+                $articleList[$k]['formattime'] = formatTime($v['dateline'], 1);
+                $articleList[$k]['time'] = formatTime($v['dateline']);
+                $articleList[$k]['link'] = '?m=blog&c=article&a=view&aid=' . $v['aid'];
+                if ($v['image']) {
+                    $imgids[$v['aid']] = $v['image'];
+                }
             }
+            
         }
         //获取图片数据
         if ($imgids) {
             $str_ids = join(',', $imgids);
-            $where['id'] = array('in',$str_ids);
-            $imginfos =  Model('image')->where($where)->fetchAll();
+            $where['id'] = array('in', $str_ids);
+            $imginfos = Model('image')->where($where)->fetchAll();
             foreach ($imginfos as $k => $v) {
                 $suff = $v['thumbH'] ? '.thumb.jpg' : '';
                 $imgids[$v['aid']] = SITE_URL . $v['path'] . $suff;
             }
         }
-        $count=$this->where($whereArticle)->count();
+        
         //组织分页html
-        $pageHtml=simplePage($count,$pageNow,$limit,'?m=blog&c=article');
+        $pageHtml = simplePage($count, $pageNow, $limit, '?m=blog&c=article');
         $return['articleList'] = $articleList;
         $return['pageHtml'] = $pageHtml;
         $return['imgids'] = $imgids;
-        return $return; 
+        return $return;
     }
+    
+    //
+
     public function html2ubb($content, $image = 0) {
         $content = preg_replace(array(
             '/<pre>([\s\S]*?)<\/pre>/i',
@@ -76,7 +92,7 @@ class articleModel extends Model {
                 ), $content);
         //转换代码文本
         $content = preg_replace_callback("/\[code=(\w+)\]([\s\S]*?)\[\/code\]/is", function($matches) {
-            return $this->_code($matches[1],$matches[2],'ubb');
+            return $this->_code($matches[1], $matches[2], 'ubb');
         }, $content);
 
         if ($image) {//是否转换图片
@@ -95,7 +111,7 @@ class articleModel extends Model {
         $tmp = preg_replace(array('/\[url=[^\]]+?\](.+?)\[\/url\]/i', '/' . PHP_EOL . '/i', '/\r|\n|\r\n/'), array("$1", '<br>', '<br>'), $content);
         //代码文本
         $tmp = preg_replace_callback("/\[code=(\w+)\]([\s\S]*?)\[\/code\]/is", function($matches) {
-            return htmlspecialchars(htmlspecialchars_decode($matches[2],ENT_QUOTES),ENT_QUOTES);
+            return htmlspecialchars(htmlspecialchars_decode($matches[2], ENT_QUOTES), ENT_QUOTES);
         }, $tmp);
         $tmp = preg_replace(array(
             '/\[attach\]\d+\[\/attach\]/i',
@@ -135,10 +151,10 @@ class articleModel extends Model {
                     ), $content);
             //转换代码文本
             $content = preg_replace_callback("/\[code=(\w+)\]([\s\S]*?)\[\/code\]/is", function($matches) {
-                return $this->_code($matches[1],$matches[2]);
+                return $this->_code($matches[1], $matches[2]);
             }, $content);
         }
-        
+
         if ($attach) {
             $whereImg['aid'] = $attach;
             $whereImg['type'] = 'article';
@@ -189,7 +205,7 @@ class articleModel extends Model {
                 //http://prismjs.com/#languages-list
                 //根据 code 返回要引入的 prism 样式
                 $classes = code_language($code);
-                return '<pre><code class="'.$classes.'">' . $content . '</code></pre>';
+                return '<pre><code class="' . $classes . '">' . $content . '</code></pre>';
             } else {
                 return "<pre>$content</pre>";
             }
@@ -197,32 +213,35 @@ class articleModel extends Model {
             return '[code=' . $code . ']' . $content . '[/code]';
         }
     }
-    
+
     //获取文章
-    public function getArticleInfo($aid){
+    public function getArticleInfo($aid) {
         $where['aid'] = $aid;
         return $this->where($where)->fetch();
     }
+
     //增加查看次数
     public function addViews($aid) {
         $cookiekey = 'view-' . $aid;
         if (getcookie($cookiekey) != $aid) {
-            $this->where(['aid'=>$aid])->increase('views');
+            $this->where(['aid' => $aid])->increase('views');
             bsetcookie($cookiekey, $aid, 300);
         }
         return true;
     }
+
     /**
      * 最新文章
      * @param int 默认取前四条
      */
-    public function latest($limit = 4){
-        $res = $this->field('aid,subject,dateline')->where(['status'=>1])->order('dateline DESC')->limit($limit)->fetchAll();
-        if($res){
-            foreach($res as $k=>$v){
+    public function latest($limit = 4) {
+        $res = $this->field('aid,subject,dateline')->where(['status' => 1])->order('dateline DESC')->limit($limit)->fetchAll();
+        if ($res) {
+            foreach ($res as $k => $v) {
                 $res[$k]['time'] = formatTime($v['dateline'], true);
             }
         }
         return $res;
     }
+
 }

@@ -7,8 +7,6 @@ class jam {
     public function run() {
         //报告所有错误(除了提醒，其他都报错，提醒类的错误，将在 shutdown 中提示，以写出优质的代码)
         error_reporting(E_ALL ^ E_NOTICE);
-        //是否 开启 debug
-        define('DEBUG', true);
         if (DEBUG) {
             global $_debug;
             $_debug['startTime'] = microtime(true);
@@ -167,7 +165,8 @@ class jam {
         if (!is_file($path)) {
             throw new \Exception("class file does't exists!!!" . $path);
         }
-        include $path;
+        
+        require_once $path;
     }
 
 }

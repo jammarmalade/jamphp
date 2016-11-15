@@ -43,7 +43,9 @@ class Error {
 
         if(AJAX){
             $return['status'] = false;
-            $return['msg'] = $e->getSql();
+            if(method_exists($e, 'getSql')){
+                $return['msg'] = $e->getSql();
+            }
             $return['data'] = $e->getMessage();
             $res = json_encode($return, JSON_UNESCAPED_UNICODE);
             echo $res;
