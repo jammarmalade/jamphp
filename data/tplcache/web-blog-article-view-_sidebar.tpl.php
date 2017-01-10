@@ -93,7 +93,7 @@
                                 </li>
                             <?php } ?>
                         </ul>-->
-                        <?php if(is_array($sideBarData['tagList'])) foreach($sideBarData['tagList'] as $k => $v) { ?>                            <a href='###'>
+                        <?php if(is_array($sideBarData['tagList'])) foreach($sideBarData['tagList'] as $k => $v) { ?>                            <a href="?tid=<?php echo $v['tagid'];?>">
                                 <?php echo $v['tagname'];?><?php if($v['articles']) { ?>（<?php echo $v['articles'];?>）<?php } ?>
                             </a>
                         <?php } ?>
